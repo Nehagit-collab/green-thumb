@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%;
+            height: 150vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: white;
+            margin-top: 8px;
+        }
+        .menu-bar {
+            text-align: center;
+            position: sticky;
+            background-color: green;
+            height: 70px; 
+            width: 100%;
+            margin: 0;
+            top: 0;
+            z-index: 1000;
+        }
+        .menu-bar ul {
+            display: inline-flex;
+            list-style: none;
+            color: black;
+            font-size: 20px;
+            padding: 10px 0;
+            margin: 0;
+        }
+        .menu-bar ul li {
+            width: 200px;
+            padding: 10px;
+            color: white;
+        }
+        .menu-bar ul li a {
+            text-decoration: none;
+            color: white;
+        }
+        .menu-bar ul li a:hover {
+            color: black;
+        }
+        .sell-container {
+            height: 200vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            margin-top:50px;
+        }
+        .sell-right {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 20px;
+            margin-left:100px;
+            margin-top: -200px;
+        }
+        .sell-left {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            margin-top: -250px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #drop-area {
+            width: 250px;
+            height: 250px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            text-align: center;
+            margin-left:500px;
+            margin-top:-1300px;
+        }
+        #img-view {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            border: 2px dashed #bbb5ff;
+            background: #f7f8ff;
+            background-position: center;
+            background-size: cover;
+        }
+        #img-view p {
+            text-align: center;
+            margin: 0;
+            line-height: 250px;
+        }
+        .sell-inputs {
+            width: 400px;
+            height: 50px;
+            border: 1px solid black;
+            padding-left: 25px;
+            font-weight: 500;
+            color: #666;
+            border-radius: 10px;
+        }
+        .sell-inputs:focus {
+            border: 2px solid #ff994f;
+        }
+        .sell-inputs::placeholder {
+            color: #a1a1a1;
+        }
+        .sell-right button {
+            padding: 15px 30px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            background: green;
+            cursor: pointer;
+        }
+        .sell-right button.c_btn {
+            background: red; /* Different color for Clear button */
+        }
+        .sell-right textarea {
+            height: 100px;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body background="sellb.jpg">
+    <div class="menu-bar">
+        <ul>
+            <li><a href="xdd2.html" class="active">Home</a></li>
+            <li><a href="reviews.html">Reviews</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="pp.html">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <h2>Sell Your Products Here!!!</h2>
+
+    <div class="sell-container">
+        <form id="contact-form" action="/submit_form" class="sell-right">
+            <input type="text" name="product_name" placeholder="Your product name" class="sell-inputs" required>
+            <input type="text" name="product_desc" placeholder="Your product description" class="sell-inputs" required>
+            <input type="number" name="price" placeholder="Your product price" class="sell-inputs" required>
+            <textarea name="message" placeholder="Give some additional tips" class="sell-inputs" required></textarea>
+            <button type="submit" class="s_btn">Submit</button>
+            <button type="reset" class="c_btn">Clear</button>
+        </form>
+        <div class="sell-left">
+            <label for="input-file" id="drop-area">
+                <input type="file" id="input-file" accept="image/*" hidden>
+                <div id="img-view">
+                    <p>Add your product image here</p>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <script>
+
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            if (form.checkValidity()) {
+               
+                alert("Your product successfully uploaded");
+                
+                 form.reset(); 
+  const imageView = document.getElementById("img-view");
+                imageView.style.backgroundImage = '';
+                imageView.textContent = 'Add your product image here';
+                imageView.style.border = '2px dashed #bbb5ff';
+
+          } else {
+               
+                alert("Please fill out all required fields.");
+            }
+        });
+
+        const dropArea = document.getElementById("drop-area");
+        const inputFile = document.getElementById("input-file");
+        const imageView = document.getElementById("img-view");
+
+        inputFile.addEventListener("change", uploadImage);
+
+        function uploadImage() {
+            if (inputFile.files && inputFile.files[0]) {
+                let imgLink = URL.createObjectURL(inputFile.files[0]);
+                imageView.style.backgroundImage = `url(${imgLink})`;
+                imageView.textContent = ""; 
+                imageView.style.border = "none";
+            }
+        }
+
+
+    </script>
+</body>
+</html>

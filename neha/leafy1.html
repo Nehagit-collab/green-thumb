@@ -1,0 +1,689 @@
+<html>
+<head> 
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> green trade</title>
+<link rel="stylesheet" href="C:\Users\ADMIN\Desktop\neha\web.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></head>
+</head>
+<body>
+<div class="header">
+<h1>Green<span> Thumb</span></h1>
+</div>
+<div class="menu-bar">
+<ul>
+<li><input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for plants"></li>
+<li><a href="xdd2.html" class="active">Home</a></li>
+<li><a href="reviews.html">Reviews</a></li>
+<li><a href="contact.html">ContactUs</a></li>
+<li><a href="pp.html">Privacypolicy</a></li>
+<div class="icons">
+    <ul>
+        <li><div class="shopping" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+        </div></li>
+         <li> <div class="wishlist-icon" onclick="toggleWishlist()">
+            <i class="fas fa-heart"></i>
+        </div></li>
+   </ul>     
+    </ul>   
+        
+        <div class="cart" id="cartContainer">
+            <h2>My Cart</h2>
+            <ul id="cart"></ul>
+            <div class="cart-total">
+                Total Cost: $<span id="totalCost">0.00</span>
+            </div>
+            <div class="checkout">
+                <div class="closeshopping" onclick="toggleCart()">Close</div>
+                <div onclick="buyItems()">Buy Now</div>
+            </div>
+        </div>
+        <div class="wishlist" id="wishlistContainer">
+            <h2>My Wishlist</h2>
+            <ul id="wishlist"></ul>
+            <div class="checkout">
+                <div class="closeshopping" onclick="toggleWishlist()">Close</div>
+                <div onclick="clearWishlist()">Clear Wishlist</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<div class="body">
+<div class="banner-card">
+<img src="lea.jpg"alt="image">
+<div class="banner-text">
+<h1>Leafy Plants</h1>
+</div>
+</div>
+<div class="main">
+<ul id="itemList" class="item-list"></ul>
+<div class="wishlist">
+            <h2>Wishlist</h2>
+            <ul id="wishlist"></ul>
+        </div>
+
+        <div class="cart">
+            <h2>Cart</h2>
+            <ul id="cart"></ul>
+            <button onclick="buyItems()">Buy</button>
+        </div>
+
+        <div id="detailsContainer" class="details-container"></div>
+    </div>
+    
+<footer>
+            <div class="footer-content">
+                <div class="footer-section about">
+                                       <div class="contact">
+                        <span><i class="fas fa-phone"></i> &nbsp; 123-456-789</span>
+                        <span><i class="fas fa-envelope"></i> &nbsp; info@example.com</span>
+                    </div>
+                    <div class="socials">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section links">
+              
+                    <ul>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; 2024 GreenThumb.com | Designed N4
+            </div>
+            
+        </footer>
+</body>
+</html>
+<style>
+.banner-card{
+  position:relative;
+  width:100%;
+  background-color:#666;
+  height:400px;
+  margin-top:20px;
+  align-items:center;
+}
+.banner-card img{
+  width:100%;
+  height:400px;
+}
+.banner-text{
+  position:absolute;
+  right:300px;
+  left:300px;
+  bottom:30px;
+  text-align:center;
+  justify-content:center;
+  padding:20px;
+  color:white;
+}
+.banner-text h1{
+  font-size:66px;
+  font-transform:uppercase;
+  font-weight:bold;
+}
+
+.header h1{
+    padding-left:60px;
+    font-size:40;
+    color:black;
+}
+.header span{
+    color:green;
+}
+.menu-bar {
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color:green;
+    height:100px; 
+}
+
+.menu-bar ul {
+    display: inline-flex;
+    list-style: none;
+    color: white;
+    font-size: 20px;
+}
+
+.menu-bar ul li {
+    width: 100px;
+    margin: 15px;
+    padding: 10px;
+    color: white;
+}
+
+.menu-bar ul li a {
+    text-decoration: none;
+    color: white;
+}
+.menu-bar ul li a:hover{
+    color:black
+}
+ .icons{
+    display:flex;
+    align-items:center;
+    margin-left:auto;
+    margin-right:-100px;
+}
+.icons .shopping{
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            width: 10px;
+           margin-top:-15px;
+           margin-left:130px;
+        }
+      .icons  .wishlist-icon{
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            width: 10px;
+            margin-left:-30px;
+           margin-top:5px;
+        }
+
+.search-box{
+font-size:13px;
+border-radius:5px 0px 0px 5px;
+padding:5px;
+width:200px;
+margin-left:-100px;
+}
+
+
+   .cart, .wishlist {
+            position: fixed;
+            top: 0;
+            left: 100%;
+            width: 300px;
+            height: 70vh;
+            margin-top: 20px;
+            background-color: #453e38;
+            transition: 0.5s;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .cart ul, .wishlist ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .cart h2, .wishlist h2 {
+            margin-top: 0;
+            text-align: center;
+            color: Black;
+        }
+        .cart .checkout, .wishlist .checkout {
+            
+            width: 100%;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .cart .checkout div, .wishlist .checkout div {
+            background-color: #666;
+            height: 50px;
+            text-align: center;
+            justify-content: center;
+            cursor: pointer;
+            display: flex;
+            font-weight: bold;
+            width: 100%;
+            color:white;
+            align-items:center;
+        }
+        .cart .checkout div:nth-child(2), .wishlist .checkout div:nth-child(2) {
+            background-color: green;
+            color: white;
+        }
+        .cart.active, .wishlist.active {
+            left: calc(100% - 350px);
+        }
+        .cart ul li, .wishlist ul li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+
+        }
+        .cart ul li:last-child, .wishlist ul li:last-child {
+            border-bottom: none;
+        }
+        .cart ul li img, .wishlist ul li img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+  
+        }
+        .cart-total {
+            color: black;
+            text-align: right;
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+        .shopping, .wishlist-icon {
+            cursor: pointer;
+            font-size: 24px;
+            color: black;
+            position: Relative;
+            top: 20px;
+        }
+        .shopping {
+            right: 50px;
+        }
+        .wishlist-icon {
+            right: 20px;
+            top:0px;
+            left:20px;
+        }
+
+
+
+
+footer{
+    background-color: #333;
+    color: #fff;
+    padding: 30px 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-section {
+    padding: 0 20px;
+    flex: 1;
+}
+
+
+.contact span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.socials {
+    margin-top: 10px;
+}
+
+.socials a {
+    color: #fff;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.socials a:hover {
+    color: blue;
+}
+
+.links ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.links li {
+    margin-bottom: 10px;
+}
+
+.links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: green;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 10px;
+    background-color: #222;
+    color: #ccc;
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+        
+        .item-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding:10px;
+            margin:60px;
+            margin-left: 20px;
+            align-items:center;
+            justify-content:center;
+        }
+        .item {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding:10px;
+            width: 200px;
+            text-align: center;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.2s;
+            line-height:1px;
+            text-align:left;
+        }
+          .item span{
+           color:green;
+        }
+        .item:hover {
+            transform: scale(1.05);
+        }
+        .item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-top: -3px;
+        }
+        .item button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .item button:hover {
+            background-color: #45a049;
+        }
+        .wishlist, .cart {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .wishlist ul, .cart ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        .wishlist h2, .cart h2 {
+            margin-top: 0;
+        }
+        .wishlist ul li, .cart ul li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+            color: black;
+           
+        }
+        .wishlist ul li:last-child, .cart ul li:last-child {
+            border-bottom: none;
+        }
+        .details-container {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position:fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width:300px;
+            height: 600px;
+            z-index: 100;
+            overflow-y:scroll;
+            align-items:center;
+        }
+        .details-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .details-container button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+     }
+     .details-container button:hover{
+       background-color:white;
+       color:black;
+     }</style>
+<script>
+const items = [
+            { id: 1, name: 'Spinach', price: 29.99,image: 'spin.jpeg', description: 'A tomato is a juicy red or yellow fruit commonly used in salads sauces and soups.', reviews:['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow upright.' ]},
+            { id: 2, name: 'Kali(Brassica oleracae)', price: 34.99, image: 'kali.jpg', description: 'Carrots are crisp orange root vegetables with a slightly sweet flavor. They grow underground and are known for their high beta-carotene content which supports eye health. Carrots can be eaten raw cooked or juiced and are a versatile ingredient in salads soups and stews.', reviews: ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow upright.'] },
+            { id: 3, name: 'Lettuce(Lettucasativa)', price: 19.99, image: 'lett.jpg', description: 'Lettuce is a leafy green vegetable known for its crisp texture and mild flavor. It grows in a rosette shape and is commonly used in salads sandwiches and wraps. Lettuce is low in calories and high in water content making it a refreshing and nutritious choice.', reviews:  ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or ages for plants that need support to grow upright.'] },
+            { id: 4, name: 'Swiss chard', price: 14.99, image: 'swiss.jpg', description: 'Cucumbers are crisp refreshing green vegetables with a mild flavor. They have a high water content making them hydrating and low in calories. Typically eaten raw in salads or as a crunchy snack cucumbers can also be pickled or used in a variety of dishes', reviews:  ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow upright.'] },
+            { id: 5, name: 'Collard Greens', price: 24.99, image: 'coll.jpg', description: 'Bell peppers are colorful crisp vegetables with a sweet flavor. They come in various colors including red yellow green and orange. Rich in vitamins A and C they are commonly used in salads stir-fries and as a crunchy snack.', reviews: ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow uprigh.'] },
+            { id: 6, name: 'Mustard Greens', price: 12.99, image: 'mus.jpeg', description: 'Broccoli is a green vegetable with a tree-like structure and a slightly bitter taste. It is rich in vitamins C and K as well as fiber and antioxidants. Often used in salads stir-fries and steamed dishes broccoli offers numerous health benefits and is a versatile addition to many meals.', reviews: ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow upright.'] },
+            { id: 7, name:'Arugula(eurasativa)', price: 22.99, image: 'arg.jpg', description: 'Cauliflower is a versatile white vegetable with a mild flavor and a dense fibrous texture. It is rich in vitamins C and K as well as fiber and antioxidants. Often used in soups salads and as a low-carb alternative to grains cauliflower can be roasted steamed or eaten raw', reviews: ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cageor plants that need support to grow upright.'] },
+            { id: 8, name: 'Beet Greens', price: 27.99, image: 'beet.jpg', description: 'zucchini is a green summer squash with a mild flavor and tender texture. It is low in calories and high in vitamins A and C. Zucchini can be grilled sautéed or used in baked dishes and is a versatile ingredient in both savory and sweet recipes.', reviews:  ['Water Consistently: Keep the soil evenly moist, but avoid waterlogging. Water deeply and regularly, especially during dry spells.','Provide Adequate Light: Ensure vegetable plants receive enough sunlight, typically 6-8 hours a day, for optimal growth.','Fertilize Wisely: Use appropriate fertilizers to provide essential nutrients, but avoid over-fertilizing, which can harm plants.','Manage Pests: Monitor for pests and diseases regularly. Use organic or chemical controls as needed, and practice good garden hygiene.','Prune and Support: Trim excess foliage to improve air circulation and provide stakes or cages for plants that need support to grow upright.'] },
+            
+        ];
+        let wishlist = [];
+        let cart = [];
+function filterItems() {
+    const searchInput = document.getElementById('searchInput');
+    const filter = searchInput.value.toLowerCase();
+    const itemList = document.getElementById('itemList');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+
+    itemList.innerHTML = '';
+   
+    let hasResults = false;
+    items.forEach(item => {
+        if (item.name.toLowerCase().includes(filter)) {
+            hasResults = true;
+
+            const li = document.createElement('li');
+            li.className = 'item';
+            li.innerHTML = `
+                <img src="${item.image}" alt="${item.name}"> 
+                <h3>${item.name}</h3>
+                <h4>$${item.price}</h4>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <p class="small-text">free delivery</p>
+                <button onclick="showDetails(${item.id})">View Details</button>
+            `;
+            itemList.appendChild(li);
+        }
+    });
+
+    
+    if (hasResults) {
+        noResultsMessage.style.display = 'none';
+    } else {
+        noResultsMessage.style.display = 'block';
+    }
+}
+        
+        function showDetails(itemId) {
+            const item = items.find(item => item.id === itemId);
+            const detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <h2>${item.name}</h2>
+                <p>${item.description}</p>
+                <h3>Price: $${item.price}</h3>
+                <button onclick="addToCart(${item.id})">Add to Cart</button>
+                <button onclick="buyNow(${item.id})">Buy Now</button>
+                <button onclick="closeDetails()">Close</button>
+                <button onclick="addToWishlist(${item.id})"><li class="fas fa-heart"></i></button>
+                <h4>Some additional tips</h4>
+                <ul>
+                    ${item.reviews.map(review => `<li>${review}</li>`).join('')}
+                </ul>
+            `;
+            detailsContainer.style.display = 'block';
+        }
+
+        function closeDetails() {
+            const detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.style.display = 'none';
+        }
+        
+        
+        function addToCart(itemId) {
+            const item = items.find(item => item.id === itemId);
+            const existingItem = cart.find(cartItem => cartItem.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity+=1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            
+            updateCart();
+        }
+
+        function addToWishlist(itemId) {
+            const item = items.find(item => item.id === itemId);
+            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+            
+            if (!existingItem) {
+                wishlist.push({ ...item, quantity: 1 });
+            }
+            
+            updateWishlist();
+        }
+        function updateCart() {
+            const cartList = document.getElementById('cart');
+         
+            const totalCostSpan= document.getElementById('totalCost');
+            cartList.innerHTML = '';
+            let totalCost = 0;
+
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = ` <img src="${item.image}" alt="${item.name}">
+            <span>${item.name} (${item.quantity})</span>
+            <span>$${(item.price * item.quantity).toFixed(2)}</span>`;
+                cartList.appendChild(li);
+                totalCost += item.price * item.quantity;
+            });
+
+            totalCostSpan.textContent = totalCost.toFixed(2);
+        }
+
+        function updateWishlist() {
+            const wishlistList = document.getElementById('wishlist');
+            wishlistList.innerHTML = '';
+
+            wishlist.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price} (x${item.quantity}) <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
+                wishlistList.appendChild(li);
+            });         
+        }
+
+
+
+        
+
+        function removeFromWishlist(itemId) {
+            wishlist = wishlist.filter(item => item.id !== itemId);
+            updateWishlist();
+        }
+
+        function toggleWishlist() {
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            wishlistContainer.classList.toggle('active');
+        }
+
+        function clearWishlist() {
+            wishlist = [];
+            updateWishlist();
+        }
+
+        function buyItems() {
+            if (cart.length > 0) {
+                alert('Thank you for your purchase!');
+                cart = [];
+                updateCart();
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        function buyNow(itemId) {
+            const item = items.find(item => item.id === itemId);
+            alert(`Thank you for purchasing ${item.name}!`);
+            closeDetails();
+        }
+                function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.classList.toggle('active');
+        }
+
+
+        window.onload = filterItems; 
+
+
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+
+
+function goToSellPage() {
+    window.location.href ='sell1.html';
+}
+
+</script>
+
+</body>
+</html>
