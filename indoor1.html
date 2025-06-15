@@ -3,30 +3,42 @@
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title> green trade</title>
-<link rel="stylesheet" href="C:\Users\ADMIN\Desktop\neha\web.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></head>
+  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   
 </head>
 <body>
-<div class="header">
+
 <h1>Green<span> Thumb</span></h1>
-</div>
-<div class="menu-bar">
+
+<input type="checkbox" id="check">
+<label for="check" >
+    <i class='bx  bx-menu' id="checkbtn"></i>
+   
+</label>
+
+<input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
+
+<div class="menu-bar">    
 <ul>
-<li><input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for plants"></li>
-<li><a href="xdd2.html" class="active">Home</a></li>
+<li><a href="index.html" class="active">Home</a></li>
 <li><a href="reviews.html">Reviews</a></li>
 <li><a href="contact.html">ContactUs</a></li>
 <li><a href="pp.html">Privacypolicy</a></li>
-<div class="icons">
-    <ul>
-        <li><div class="shopping" onclick="toggleCart()">
-            <i class="fas fa-shopping-cart"></i>
-        </div></li>
-         <li> <div class="wishlist-icon" onclick="toggleWishlist()">
-            <i class="fas fa-heart"></i>
-        </div></li>
-   </ul>     
-    </ul>   
+<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+         <li>
+         <div class="shopping" onclick="toggleCart()">
+         <i class="fas fa-shopping-cart"></i>
+         </div>
+         </li>
+         <li>
+         <div class="wishlist-icon" onclick="toggleWishlist()">
+         <i class="fas fa-heart"></i>
+         </div>
+        </li>
+   </ul>  
+</div>  
         
         <div class="cart" id="cartContainer">
             <h2>My Cart</h2>
@@ -55,7 +67,7 @@
 <div class="banner-card">
 <img src="bgn.jpg"alt="image">
 <div class="banner-text">
-<h1>Indoor Plants</h1>
+<h2>Indoor Plants</h2>
 </div>
 </div>
 <div class="main">
@@ -89,16 +101,6 @@
                     </div>
                 </div>
 
-                <div class="footer-section links">
-              
-                    <ul>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-
             <div class="footer-bottom">
                 &copy; 2024 GreenThumb.com | Designed N4
             </div>
@@ -106,375 +108,6 @@
         </footer>
 </body>
 </html>
-<style>
-.banner-card{
-  position:relative;
-  width:100%;
-  background-color:#666;
-  height:400px;
-  margin-top:20px;
-  align-items:center;
-}
-.banner-card img{
-  width:100%;
-  height:400px;
-}
-.banner-text{
-  position:absolute;
-  right:300px;
-  left:300px;
-  bottom:30px;
-  text-align:center;
-  justify-content:center;
-  padding:20px;
-  color:white;
-}
-.banner-text h1{
-  font-size:66px;
-  font-transform:uppercase;
-  font-weight:bold;
-}
-
-.header h1{
-    padding-left:60px;
-    font-size:40;
-    color:black;
-}
-.header span{
-    color:green;
-}
-.menu-bar {
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color:green;
-    height:100px; 
-}
-
-.menu-bar ul {
-    display: inline-flex;
-    list-style: none;
-    color: white;
-    font-size: 20px;
-}
-
-.menu-bar ul li {
-    width: 100px;
-    margin: 15px;
-    padding: 10px;
-    color: white;
-}
-
-.menu-bar ul li a {
-    text-decoration: none;
-    color: white;
-}
-.menu-bar ul li a:hover{
-    color:black
-}
- .icons{
-    display:flex;
-    align-items:center;
-    margin-left:auto;
-    margin-right:-100px;
-}
-.icons .shopping{
-            cursor: pointer;
-            font-size: 24px;
-            color: white;
-            width: 10px;
-           margin-top:-15px;
-           margin-left:130px;
-        }
-      .icons  .wishlist-icon{
-            cursor: pointer;
-            font-size: 24px;
-            color: white;
-            width: 10px;
-            margin-left:-30px;
-           margin-top:5px;
-        }
-
-.search-box{
-font-size:13px;
-border-radius:5px 0px 0px 5px;
-padding:5px;
-width:200px;
-margin-left:-100px;
-}
-
-
-   .cart, .wishlist {
-            position: fixed;
-            top: 0;
-            left: 100%;
-            width: 300px;
-            height: 70vh;
-            margin-top: 20px;
-            background-color: #453e38;
-            transition: 0.5s;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
-        .cart ul, .wishlist ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .cart h2, .wishlist h2 {
-            margin-top: 0;
-            text-align: center;
-            color: Black;
-        }
-        .cart .checkout, .wishlist .checkout {
-            
-            width: 100%;
-            bottom: 0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .cart .checkout div, .wishlist .checkout div {
-            background-color: #666;
-            height: 50px;
-            text-align: center;
-            justify-content: center;
-            cursor: pointer;
-            display: flex;
-            font-weight: bold;
-            width: 100%;
-            color:white;
-            align-items:center;
-        }
-        .cart .checkout div:nth-child(2), .wishlist .checkout div:nth-child(2) {
-            background-color: green;
-            color: white;
-        }
-        .cart.active, .wishlist.active {
-            left: calc(100% - 350px);
-        }
-        .cart ul li, .wishlist ul li {
-            padding: 5px 0;
-            border-bottom: 1px solid #ddd;
-
-        }
-        .cart ul li:last-child, .wishlist ul li:last-child {
-            border-bottom: none;
-        }
-        .cart ul li img, .wishlist ul li img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-  
-        }
-        .cart-total {
-            color: black;
-            text-align: right;
-            font-size: 1.5rem;
-            margin-top: 10px;
-        }
-        .shopping, .wishlist-icon {
-            cursor: pointer;
-            font-size: 24px;
-            color: black;
-            position: Relative;
-            top: 20px;
-        }
-        .shopping {
-            right: 50px;
-        }
-        .wishlist-icon {
-            right: 20px;
-            top:0px;
-            left:20px;
-        }
-
-
-
-
-footer{
-    background-color: #333;
-    color: #fff;
-    padding: 30px 0;
-}
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.footer-section {
-    padding: 0 20px;
-    flex: 1;
-}
-
-
-.contact span {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.socials {
-    margin-top: 10px;
-}
-
-.socials a {
-    color: #fff;
-    font-size: 20px;
-    margin-right: 10px;
-}
-
-.socials a:hover {
-    color: blue;
-}
-
-.links ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.links li {
-    margin-bottom: 10px;
-}
-
-.links a {
-    color: #ccc;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.links a:hover {
-    color: green;
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 10px;
-    background-color: #222;
-    color: #ccc;
-    font-size: 14px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-  }
-        
-        .item-list {
-            display: flex;
-            flex-wrap: wrap;
-            list-style: none;
-            padding:10px;
-            margin:60px;
-            margin-left: 20px;
-            align-items:center;
-            justify-content:center;
-        }
-        .item {
-            border: 1px solid #ddd;
-            margin: 10px;
-            padding:10px;
-            width: 200px;
-            text-align: center;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            transition: transform 0.2s;
-            line-height:1px;
-            text-align:left;
-        }
-          .item span{
-           color:green;
-        }
-        .item:hover {
-            transform: scale(1.05);
-        }
-        .item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-top: -3px;
-        }
-        .item button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .item button:hover {
-            background-color: #45a049;
-        }
-        .wishlist, .cart {
-            margin-top: 20px;
-            background-color: #f0f0f0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .wishlist ul, .cart ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-        }
-        .wishlist h2, .cart h2 {
-            margin-top: 0;
-        }
-        .wishlist ul li, .cart ul li {
-            padding: 5px 0;
-            border-bottom: 1px solid #ddd;
-            color: black;
-           
-        }
-        .wishlist ul li:last-child, .cart ul li:last-child {
-            border-bottom: none;
-        }
-        .details-container {
-            display: none;
-            padding: 20px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position:fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width:300px;
-            height: 600px;
-            z-index: 100;
-            overflow-y:scroll;
-            align-items:center;
-        }
-        .details-container img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .details-container button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-     }
-     .details-container button:hover{
-       background-color:white;
-       color:black;
-     }</style>
 <script>
 const items = [
             { id: 1, name: 'Spider plant', price: 34.99,image: 'spider.png', description: 'The spider plant is a lively low-maintenance houseplant with arching green leaves and playful white-striped offsets making it a charming and easy-to-care-for addition to any home',reviews:['Light: Bright, indirect light is best. Too much direct sunlight can scorch the leaves.'
@@ -682,8 +315,7 @@ function showSlides(n) {
   for (i = 0; i < dots.length; i++) {
     dots[i].className = dots[i].className.replace(" active", "");
   }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
+
 }
 
 

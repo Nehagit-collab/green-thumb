@@ -1,27 +1,54 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Clients Review UI </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<head> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Green Trade</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 </head>
+<body>
 
-<body background="C:\Users\sneha\OneDrive\Desktop\neha 2\neha\pexels-lesley-484398-1193892 (1).jpg">
-   <div class="menu-bar">
-<ul>
-<li><a href="xdd2.html" class="active">Home</a></li>
-<li><a href="reviews.html">reviews</a></li>
-<li><a href="contact.html">ContactUs</a></li>
-<li><a href="pp.html">Privacypolicy</a></li>
-</ul>  
+<h1>Green<span> Thumb</span></h1>
+
+<input type="checkbox" id="check" />
+<label for="check">
+  <i class='bx bx-menu' id="checkbtn"></i>
+</label>
+
+<input
+  type="text"
+  id="searchInput"
+  class="search-box"
+  onkeyup="filterItems()"
+  placeholder="Search for your plants....."
+/>
+
+<div class="menu-bar">
+  <ul>
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+    <li><a href="contact.html">ContactUs</a></li>
+    <li><a href="pp.html">Privacypolicy</a></li>
+    <li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+    <li>
+      <div class="shopping" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+    </li>
+    <li>
+      <div class="wishlist-icon" onclick="toggleWishlist()">
+        <i class="fas fa-heart"></i>
+      </div>
+    </li>
+  </ul>
 </div>
-</div>
+
     <div class="container">
+        <div class="head">
         <h2> Our Happy Clients </h2>
+           </div>
         <div class="reviewSection">
             <div class="reviewItem">
                 <div class="top">
@@ -163,159 +190,116 @@ background-size:cover;
 width:100%;
 height:600px;
 }
-
-.menu-bar {
-    text-align: center;
-    position: sticky;
-    background-color:green;
-    height:70px; 
-    width:100%;
+.head h2{
+    font-size: 30px;
+    margin-bottom: 20px;
 }
-
-.menu-bar ul {
-    display: inline-flex;
-    list-style: none;
-    color: black;
-    font-size: 20px;
- padding-bottom:10px;
-    padding-top:10px;
-}
-
-.menu-bar ul li {
-    width: 200px;
-    padding:10px;
-    color: white;
-    align-items:center;
-}
-
-.menu-bar ul li a {
-    text-decoration: none;
-    color: white;
-}
-.menu-bar ul li a:hover{
-color:rgb(11, 1, 1)
-}
-.menu-bar.icons{
-color:white;
-}
-
-
-.container {
-    width: 100%;
-    height: 300vh;
-    color: white;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    margin-top:-550px;
-}
-
-h2 {
-    font-size: 3rem;
-    margin-bottom:30px;
-    text-align: center;
-    color:rgba(10, 9, 9, 0.94);
-    background-color: white;
-}
-
-.clientImage {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.clientImage span {
-    margin-left: 10px;
-}
-
-.clientImage img {
-    width: 40px;
-}
-
-.reviewSection {
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.reviewItem {
-    width: 300px;
-    padding: 10px;
-    margin: 50px;
-    cursor: pointer;
-    border-radius: 15px;
-    background-color: white;
-    border: 1px solid rgb(55, 55, 55);
-    transition: all .2s linear;
-    color:black;
-}
-
-.reviewItem:hover {
-    border-color: rgb(255, 255, 255);
-    transform: scale(1.01);
-    background-color:rgb(0, 121, 24);
-    box-shadow: 0 0px 5px 0px #cbc0c0;
-    color:white;
-}
-
-.top {
-    margin-bottom:10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.top ul {
-    display: flex;
-    list-style: none;
-}
-
-.top ul li {
-    padding-left: 4px;
-    color: orange;
-}
-
-article p {
-    font-size: 15px;
-    font-weight: 100;
-    margin-bottom: 1rem;
-    font-family: system-ui;
-}
-
-
-@media screen and (max-width:700px) {
     .container {
-        height: auto;
+      width: 100%;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fefefe;
     }
 
-    .description {
-        width: 90%;
-    }
-}
-
-@media screen and (max-width:375px) {
     .reviewSection {
-        padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      max-width: 1200px;
     }
 
     .reviewItem {
-        width: 100%;
+      background-color: white;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 15px;
+      width: 300px;
+      transition: all 0.3s ease;
     }
 
-    .clientImage {
-        margin-bottom: 0.6rem;
+    .reviewItem:hover {
+      background-color: rgb(255, 255, 255);
+      color: rgb(0, 0, 0);
+      transform: scale(1.02);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .top {
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
     }
-}
+
+    .clientImage {
+      display: flex;
+      align-items: center;
+    }
+
+    .clientImage img {
+      width: 100px;
+      height: 90px;
+      border-radius: 50%;
+    }
+
+    .clientImage span {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .top ul {
+      display: flex;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .top ul li {
+      color: orange;
+      padding-left: 4px;
+    }
+
+    .review {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    article p:last-child {
+      font-size: 13px;
+      color: #888;
+    }
+
+    @media (max-width: 768px) {
+      .reviewItem {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 480px) {
+     .head h2 {
+        font-size: 1.8rem;
+      }
+      .search-box{
+      display: none;
+    }
+   
+
+      .top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+       .clientImage img {
+        width: 50px;
+        height: 50px;
+       }
+      .clientImage span {
+        font-size: 16px;
+      }
+    }
+  </style>
 </style>
 </body>
 </html>

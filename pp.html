@@ -1,13 +1,44 @@
 <html>
-<head>
-<div class="menu-bar">
+<head> 
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> green trade</title>
+  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+
+<h1>Green<span> Thumb</span></h1>
+
+<input type="checkbox" id="check">
+<label for="check" >
+    <i class='bx  bx-menu' id="checkbtn"></i>
+   
+</label>
+
+<input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
+
+<div class="menu-bar">    
 <ul>
-<li><a href="xdd2.html" class="active">Home</a></li>
-<li><a href="reviews.html">reviews</a></li>
+<li><a href="index.html" class="active">Home</a></li>
+<li><a href="reviews.html">Reviews</a></li>
 <li><a href="contact.html">ContactUs</a></li>
 <li><a href="pp.html">Privacypolicy</a></li>
-</ul>
-</div>
+<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+         <li>
+         <div class="shopping" onclick="toggleCart()">
+         <i class="fas fa-shopping-cart"></i>
+         </div>
+         </li>
+         <li>
+         <div class="wishlist-icon" onclick="toggleWishlist()">
+         <i class="fas fa-heart"></i>
+         </div>
+        </li>
+   </ul>  
+</div>  
+        
 <body background="C:\Users\sneha\OneDrive\Desktop\neha 2\neha\pexels-scottwebb-212937.jpg">
 <div class="wrapper flex_align_justify">
 <div class="terms_service">
@@ -83,125 +114,200 @@ Publicly available information: When you post an item for sale using our Service
 </div>
 </div>
 <style>
-body{
-background-repeat:no-repeat;
-background-size:cover;
-width:100%;
-height:100%;
-}
-  .menu-bar {
-    text-align: center;
-    position: sticky;
-    background-color:green;
-    height:80px; 
-    width:auto;
-    margin-top:-20px;
-    margin-left:-10%;
+.flex_align_justify {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.menu-bar ul {
-    display: inline-flex;
-    list-style: none;
-    color: black;
-    font-size: 20px;
-    padding-bottom:10px;
-    padding-top:-20px;
+.flex_align {
+  display: flex;
+  align-items: center;
 }
 
-.menu-bar ul li {
-    width: 160px;
-    margin-right:30px;
-    padding:10px;
-    color: white;
-    align-items:center;
+.wrapper {
+  min-height: 100vh;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
 }
 
-.menu-bar ul li a {
-    text-decoration: none;
-    color: white;
-}
-.menu-bar ul li a:hover{
-color:black
-}
-
-.flex_align_justify{
-display:flex;
-align-items:center;
-justify-content:center;
-}
-.flex_align{
-display:flex;
-align-items:center;
-}
-.wrapper{
-margin-top:20px;
-min-height:100vh;
-padding: 0 20px;
-justify-content:center;
-}
-.terms_service{
-width:500px;
-max-width:100%;
-background:white;
-border-radius:3px;
-box-shadow:0 0 3px rgba(0,0,0,0.15);
-}
-.terms_service .tc_item{
-padding:20px 40px;
-}
-.terms_service .tc_head{
-height:90px;
-box-shadow:0 1px 2px rgba(0,0,0,0.15);
-justify-content:center;
-color:black;
-}
-.terms_service .tc_body{
-height:350px;
-overflow:auto;
-padding-right:20px;
-overflow-y:scroll;
-}
-.terms_service .tc_body ol li{
-margin-bottom:15px;
-}
-.terms_service .tc_body ol li h3{
-margin-bottom:5px;
-}
-.terms_service .tc_foot{
-box-shadow:0 -1px 2px rgba(0,0,0,0.15);
-justify-content:space-between;
-height:80px;
-}
-.terms_service .tc_foot button{
-width:100%;
-height:40px;
-border:1px;
-padding:10px 20px;
-border-radius:3px;
-cursor:pointer;
-transition:all 0.5s ease;
-}
-.terms_service .tc_foot button.d_btn
-{
- margin-right:20px;
- background:white;
-color:red;
+.terms_service {
+  width: 500px;
+  max-width: 100%;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
 }
 
-.terms_service .tc_foot button.a_btn
-{
- margin-right:20px;
- background:green;
-color:white;
+.terms_service .tc_item {
+  padding: 20px 40px;
+}
+
+.terms_service .tc_head {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.terms_service .tc_body {
+  height: 350px;
+  overflow-y: auto;
+  padding: 20px 20px 20px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.terms_service .tc_body ol {
+  padding-left: 20px;
+}
+
+.terms_service .tc_body ol li {
+  margin-bottom: 15px;
+}
+
+.terms_service .tc_body ol li h3 {
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.terms_service .tc_foot {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.15);
+  padding: 0 20px;
+}
+
+.terms_service .tc_foot button {
+  width: 48%;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.terms_service .tc_foot button.d_btn {
+  background: white;
+  color: red;
+  border: 1px solid red;
+}
+
+.terms_service .tc_foot button.a_btn {
+  background: rgb(0, 178, 0);
+  color: white;
+  border: 1px solid rgb(1, 176, 1);
 }
 .terms_service .tc_foot button.d_btn:hover{
- background:green;
-color:white;
+   background: rgb(180, 0, 0);
+  color: white;
+  border-color: rgb(142, 36, 0);
 }
-.terms_service .tc_foot button.a_btn:hover{
- background:green;
-color:white;
+.terms_service .tc_foot button.a_btn:hover {
+  background: darkgreen;
+  color: white;
+  border-color: darkgreen;
+}
+
+
+ .text{
+    font-size: 17px;
+  }
+@media screen and (max-width: 768px) {
+  .terms_service .tc_item {
+    padding: 20px;
+  }
+
+  .terms_service .tc_head {
+    font-size: 1.1rem;
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .terms_service .tc_body {
+    height: 300px;
+    font-size: 13px;
+  }
+
+  .terms_service .tc_body ol li h3 {
+    font-size: 0.95rem;
+  }
+
+  .terms_service .tc_foot {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .terms_service .tc_foot button {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+   margin-top: -30%;
+  }
+
+  .terms_service {
+    width: 100%;
+  }
+  .text{
+    font-size: 10px;
+  }
+
+  .terms_service .tc_body {
+    height: 350px;
+  }
+
+  .terms_service .tc_item {
+    padding: 15px;
+  }
+      .search-box{
+      display: none;
+    }
+
+  .terms_service .tc_head {
+    font-size: 1rem;
+  }
+  
+  .terms_service .tc_head {
+    font-size: 1.1rem;
+    height: 50px;
+    padding: 10px 0;
+  }
+
+ 
+
+  .terms_service .tc_foot {
+    flex-direction: row;
+    height: 40px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .terms_service .tc_foot button {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 380px) {
+  .wrapper {
+   margin-top: -10%;
+  }
 }
 </style>
+
 </body>
 </html>

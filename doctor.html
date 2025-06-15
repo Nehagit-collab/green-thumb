@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenGuard - Plant Disease Detector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f9f4;
+      color: #2e7d32;
+      align-items: center;
+      justify-content: center;
+    }
+   
+    h2 {
+      text-align: center;
+      font-size: 40px;
+    }
+    .box{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      height: 100vh;
+      margin-left: 25%;
+    }
+    .upload-section {
+      border: 2px dashed #2e7d32;
+      padding: 30px;
+      text-align: center;
+      background: #e6f4ea;
+      cursor: pointer;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    #preview {
+      max-width: 300px;
+      height: 300px;
+      border-radius: 8px;
+      margin-top: 50px;
+       margin-bottom: 50px;
+    }
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 25%;
+      align-items: center;
+    }
+    button:disabled {
+      background: #a5d6a7;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 25px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+    }
+    .head h1{
+        font-size: 20px;
+    }
+  </style>
+
+<body>
+
+<h1>Green<span> Thumb</span></h1>
+
+<input type="checkbox" id="check">
+<label for="check" >
+    <i class='bx  bx-menu' id="checkbtn"></i>
+   
+</label>
+
+<input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
+
+<div class="menu-bar">    
+<ul>
+<li><a href="index.html" class="active">Home</a></li>
+<li><a href="reviews.html">Reviews</a></li>
+<li><a href="contact.html">ContactUs</a></li>
+<li><a href="pp.html">Privacypolicy</a></li>
+<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+         <li>
+         <div class="shopping" onclick="toggleCart()">
+         <i class="fas fa-shopping-cart"></i>
+         </div>
+         </li>
+         <li>
+         <div class="wishlist-icon" onclick="toggleWishlist()">
+         <i class="fas fa-heart"></i>
+         </div>
+        </li>
+   </ul>  
+</div>  
+        
+  <h2>Green Guard <h2>
+    <div class="head">
+  <h1>Plant Disease Detector</h1>
+    </div>
+<div class="box">
+ 
+     <label for="input-file" id="drop-area">
+                <input type="file" id="input-file" accept="image/*" hidden >
+      <div class="image-view">
+        <p> Click or drag to upload a plant leaf photo</p>
+      </div>
+  </label>
+
+  <img id="preview" src="" alt="" style="display:none" />
+
+  <button id="detectBtn" disabled>Detect Disease</button>
+
+  <div id="result"></div>
+</div>
+  <script>
+    const plantImageInput = document.getElementById('plantImageInput');
+    const preview = document.getElementById('preview');
+    const detectBtn = document.getElementById('detectBtn');
+    const result = document.getElementById('result');
+
+    plantImageInput.addEventListener('change', () => {
+      const file = plantImageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          preview.src = reader.result;
+          preview.style.display = 'block';
+          result.textContent = '';
+          detectBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    detectBtn.addEventListener('click', () => {
+      result.textContent = 'Detecting disease... Please wait.';
+      detectBtn.disabled = true;
+
+      // Simulated AI backend call
+      setTimeout(() => {
+        // Fake prediction result for demo purposes
+        const fakeDiseases = [
+          'Healthy Leaf 🌿',
+          'Powdery Mildew',
+          'Leaf Rust',
+          'Early Blight',
+          'Bacterial Spot',
+        ];
+        const prediction = fakeDiseases[Math.floor(Math.random() * fakeDiseases.length)];
+        result.textContent = `Prediction: ${prediction}`;
+        detectBtn.disabled = false;
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
+
+
