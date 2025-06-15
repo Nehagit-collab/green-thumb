@@ -200,45 +200,58 @@
             }
         }
 
-        function addToWishlist(itemId) {
-            const item = allProducts.find(item => item.id === itemId);
-            if (!item) {
-                return;
-            }
-            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+             function loadWishlist() {
+    const storedWishlist = localStorage.getItem('wishlist');
+    if (storedWishlist) {
+        wishlist = JSON.parse(storedWishlist);
+    } else {
+        wishlist = [];
+    }
+    updateWishlist(); // Make sure this calls the correct update function
+}
+function saveWishlistToStorage() {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+}
+       function addToWishlist(itemId) {
+    const item = allProducts.find(item => item.id === itemId);
+    if (!item) {
+        console.error('Item not found in allProducts:', itemId);
+        return;
+    }
+    const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
 
-            if (!existingItem) {
-                wishlist.push({ ...item, quantity: 1 });
-            } else {
-                alert(`${item.name} is already in your wishlist!`);
-            }
-            updateWishlist();
-        }
-
-        function updateWishlist() {
-            const wishlistList = document.getElementById('wishlist');
-            if (!wishlistList) {
-                return;
-            }
-            wishlistList.innerHTML = '';
-
-            wishlist.forEach(item => {
+    if (!existingItem) {
+        wishlist.push({ ...item, quantity: 1 }); // Assuming quantity 1 for wishlist items
+        saveWishlistToStorage(); // <--- ADD THIS LINE
+        updateWishlist(); // <--- ADD THIS LINE
+    } else {
+        alert(`${item.name} is already in your wishlist!`);
+    }
+}
+function updateWishlist() {
+    const wishlistList = document.getElementById('wishlist');
+    if (!wishlistList) {
+        console.error("Wishlist element not found.");
+        return;
+    }
+    wishlistList.innerHTML = '';
+    
+  wishlist.forEach(item => {
                 const li = document.createElement('li');
                 li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price} <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
                 wishlistList.appendChild(li);
             });
-        }
+}
 
-        function removeFromWishlist(itemId) {
-            wishlist = wishlist.filter(item => item.id !== itemId);
-            updateWishlist();
-        }
-
+      function removeFromWishlist(itemId) {
+    wishlist = wishlist.filter(item => item.id !== itemId);
+    saveWishlistToStorage(); // <--- ADD THIS LINE
+    updateWishlist(); // <--- ADD THIS LINE
+}
         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
             if (wishlistContainer) wishlistContainer.classList.toggle('active');
         }
-
         function clearWishlist() {
             wishlist = [];
             updateWishlist();
@@ -358,7 +371,8 @@
         const currentPageProducts = allProducts.filter(p => p.category === 'flowering');
 
         window.addEventListener('load', () => {
-            loadCart();
+            loadCart();         
+             loadWishlist();
             const searchQuery = getUrlParameter('search');
 
             if (searchQuery) {

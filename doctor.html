@@ -1,174 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GreenGuard - Plant Disease Detector</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GreenGuard - Plant Disease Detector</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f9f4;
-      color: #2e7d32;
-      align-items: center;
-      justify-content: center;
-    }
-   
-    h2 {
-      text-align: center;
-      font-size: 40px;
-    }
-    .box{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 50%;
-      height: 100vh;
-      margin-left: 25%;
-    }
-    .upload-section {
-      border: 2px dashed #2e7d32;
-      padding: 30px;
-      text-align: center;
-      background: #e6f4ea;
-      cursor: pointer;
-    }
-    input[type="file"] {
-      display: none;
-    }
-    #preview {
-      max-width: 300px;
-      height: 300px;
-      border-radius: 8px;
-      margin-top: 50px;
-       margin-bottom: 50px;
-    }
-    button {
-      background: #2e7d32;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 25%;
-      align-items: center;
-    }
-    button:disabled {
-      background: #a5d6a7;
-      cursor: not-allowed;
-    }
-    #result {
-      margin-top: 25px;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-    }
-    .head h1{
-        font-size: 20px;
-    }
-  </style>
+    <style>
+        body {
+            background: #f0f9f4;
+            color: #2e7d32;
+            display: flex;
+            flex-direction: column;    
+            min-height: 100vh;
+            margin: 0;
+          
+        }
 
+        .detector-heading {
+            text-align: center;
+            font-size: 2.5em;
+            color: #1b5e20;
+            margin-bottom: 30px;
+        }
+
+        .detector-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            margin-left: 29%;
+            max-width: 600px;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        #drop-area {
+            border: 2px dashed #2e7d32;
+            padding: 40px;
+            text-align: center;
+            background: #e6f4ea;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #drop-area:hover:not(.has-image) {
+            background-color: #dcedc8;
+        }
+
+        .upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .upload-placeholder p {
+            margin: 0;
+            font-size: 1.1em;
+            color: #388e3c;
+            margin-bottom: 15px;
+        }
+
+        .upload-placeholder .fas {
+            font-size: 3em;
+            color: #388e3c;
+        }
+
+        #input-file {
+            display: none;
+        }
+#preview {
+            max-width: 100%;
+            max-height: 250px;
+            width: auto;
+            height: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            display: none; /* Controlled by JS */
+            /* Removed absolute positioning */
+            z-index: 1;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #drop-area.has-image .upload-placeholder {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Updated styles for drop-area when it has an image */
+        #drop-area.has-image {
+            border: 2px solid #2e7d32;
+            background: none;
+            padding: 0;
+            /* Flexbox properties to center the image */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            flex-direction: row; /* Ensure items are in a row if needed, but defaults to column for the placeholder */
+        }
+
+
+        #detectBtn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            width: auto;
+            min-width: 200px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+        }
+
+        #detectBtn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        #detectBtn:disabled {
+            background: #a5d6a7;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+
+        #result {
+            margin-top: 30px;
+            background: #f9fbe7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.15);
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+     
+    </style>
+</head>
 <body>
 
-<h1>Green<span> Thumb</span></h1>
+<h1>Green<span>Thumb</span></h1>
 
 <input type="checkbox" id="check">
-<label for="check" >
-    <i class='bx  bx-menu' id="checkbtn"></i>
-   
+<label for="check" class="check-label">
+    <i class='bx bx-menu' id="checkbtn"></i>
 </label>
 
 <input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
 
-<div class="menu-bar">    
-<ul>
-<li><a href="index.html" class="active">Home</a></li>
-<li><a href="reviews.html">Reviews</a></li>
-<li><a href="contact.html">ContactUs</a></li>
-<li><a href="pp.html">Privacypolicy</a></li>
-<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
-         <li>
-         <div class="shopping" onclick="toggleCart()">
-         <i class="fas fa-shopping-cart"></i>
-         </div>
-         </li>
-         <li>
-         <div class="wishlist-icon" onclick="toggleWishlist()">
-         <i class="fas fa-heart"></i>
-         </div>
+<div class="menu-bar">
+    <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="pp.html">Privacy Policy</a></li>
+        <li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+        <li>
+            <div class="shopping" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
         </li>
-   </ul>  
-</div>  
-        
-  <h2>Green Guard <h2>
-    <div class="head">
-  <h1>Plant Disease Detector</h1>
-    </div>
-<div class="box">
- 
-     <label for="input-file" id="drop-area">
-                <input type="file" id="input-file" accept="image/*" hidden >
-      <div class="image-view">
-        <p> Click or drag to upload a plant leaf photo</p>
-      </div>
-  </label>
-
-  <img id="preview" src="" alt="" style="display:none" />
-
-  <button id="detectBtn" disabled>Detect Disease</button>
-
-  <div id="result"></div>
+        <li>
+            <div class="wishlist-icon" onclick="toggleWishlist()">
+                <i class="fas fa-heart"></i>
+            </div>
+        </li>
+    </ul>
 </div>
-  <script>
-    const plantImageInput = document.getElementById('plantImageInput');
-    const preview = document.getElementById('preview');
-    const detectBtn = document.getElementById('detectBtn');
-    const result = document.getElementById('result');
 
-    plantImageInput.addEventListener('change', () => {
-      const file = plantImageInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          preview.src = reader.result;
-          preview.style.display = 'block';
-          result.textContent = '';
-          detectBtn.disabled = false;
-        };
-        reader.readAsDataURL(file);
-      }
+<h2 class="detector-heading">Green Guard - Plant Disease Detector</h2>
+
+<div class="detector-box">
+    <label for="input-file" id="drop-area">
+        <input type="file" id="input-file" accept="image/*" hidden>
+        <div class="upload-placeholder">
+            <p>Click or drag to upload a plant leaf photo</p>
+            <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <img id="preview" src="" alt="Image Preview" />
+    </label>
+
+    <button id="detectBtn" disabled>Detect Disease</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputFile = document.getElementById('input-file');
+        const dropArea = document.getElementById('drop-area');
+        const preview = document.getElementById('preview');
+        const uploadPlaceholder = dropArea.querySelector('.upload-placeholder');
+        const detectBtn = document.getElementById('detectBtn');
+        const result = document.getElementById('result');
+
+        let selectedFile = null;
+
+        inputFile.addEventListener('change', (event) => {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                displayImage(selectedFile);
+            }
+        });
+
+        dropArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            if (!dropArea.classList.contains('has-image')) {
+                dropArea.style.backgroundColor = '#dcedc8';
+            }
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            if (!dropArea.classList.contains('has-image')) {
+                dropArea.style.backgroundColor = '#e6f4ea';
+            }
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropArea.style.backgroundColor = '#e6f4ea';
+
+            selectedFile = event.dataTransfer.files[0];
+            if (selectedFile && selectedFile.type.startsWith('image/')) {
+                displayImage(selectedFile);
+            } else {
+                result.textContent = 'Please drop an image file.';
+                resetState();
+            }
+        });
+
+        function displayImage(file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+                uploadPlaceholder.style.display = 'none';
+                dropArea.classList.add('has-image');
+                result.textContent = 'Image ready for detection.';
+                detectBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetState() {
+            selectedFile = null;
+            preview.src = '';
+            preview.style.display = 'none';
+            uploadPlaceholder.style.display = 'flex';
+            dropArea.classList.remove('has-image');
+            dropArea.style.backgroundColor = '#e6f4ea';
+            result.textContent = '';
+            detectBtn.disabled = true;
+        }
+
+        detectBtn.addEventListener('click', () => {
+            if (!selectedFile) {
+                result.textContent = 'Please upload an image first!';
+                return;
+            }
+
+            result.textContent = 'Detecting disease... Please wait.';
+            detectBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('plant_image', selectedFile);
+
+            fetch('http://127.0.0.1:5000/api/detect-disease', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.disease) {
+                    let predictionText = `Prediction: ${data.disease}`;
+                    if (data.confidence) {
+                        predictionText += ` (Confidence: ${(data.confidence * 100).toFixed(2)}%)`;
+                    }
+                    result.textContent = predictionText;
+
+                    if (data.recommendations && data.recommendations.length > 0) {
+                        const recommendationsList = data.recommendations.map(rec => `<li>${rec}</li>`).join('');
+                        result.innerHTML += `<p>Recommendations:</p><ul>${recommendationsList}</ul>`;
+                    }
+
+                } else {
+                    result.textContent = 'Detection failed. No specific disease identified or unexpected response from server.';
+                }
+            })
+            .catch(error => {
+                console.error('Error during detection:', error);
+                result.textContent = `Error: ${error.message}. Please try again.`;
+            })
+            .finally(() => {
+                detectBtn.disabled = false;
+            });
+        });
     });
 
-    detectBtn.addEventListener('click', () => {
-      result.textContent = 'Detecting disease... Please wait.';
-      detectBtn.disabled = true;
+    function goToSellPage() {
+        alert('Navigating to Sell Page!');
+    }
 
-      // Simulated AI backend call
-      setTimeout(() => {
-        // Fake prediction result for demo purposes
-        const fakeDiseases = [
-          'Healthy Leaf 🌿',
-          'Powdery Mildew',
-          'Leaf Rust',
-          'Early Blight',
-          'Bacterial Spot',
-        ];
-        const prediction = fakeDiseases[Math.floor(Math.random() * fakeDiseases.length)];
-        result.textContent = `Prediction: ${prediction}`;
-        detectBtn.disabled = false;
-      }, 2000);
-    });
-  </script>
+    function toggleCart() {
+        alert('Toggling Cart!');
+    }
+
+    function toggleWishlist() {
+        alert('Toggling Wishlist!');
+    }
+
+    function filterItems() {
+        console.log("Searching for: ", document.getElementById('searchInput').value);
+    }
+</script>
 
 </body>
 </html>
-
-

@@ -37,7 +37,7 @@
     <input type="text" id="searchInput" class="search-box" onkeypress="handlePageSearch(event)" placeholder="Search for cactus plants.....">
     <button class="search-btn" onclick="handlePageSearch(null)"> <i class="fas fa-search"></i> </button>
 
-    <div class="menu-bar">
+    <div class="menu-bar" id="menuBar">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="reviews.html">Reviews</a></li>
@@ -176,13 +176,49 @@
 
         function removeFromCart(itemId) {
             cart = cart.filter(item => item.id !== itemId);
-            localStorage.setItem('cart', JSON.stringify(cart));
+            saveCartToStorage();
             updateCart();
+        }
+
+        function toggleMenu() {
+            const check = document.getElementById('check');
+            const menuBar = document.getElementById('menuBar');
+            if (check && menuBar) {
+                check.checked = !check.checked;
+            }
+
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
 
         function toggleCart() {
             const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
             if (cartContainer) cartContainer.classList.toggle('active');
+
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
 
         function clearCart() {
@@ -201,6 +237,20 @@
             }
         }
 
+        function saveWishlistToStorage() {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        function loadWishlist() {
+            const storedWishlist = localStorage.getItem('wishlist');
+            if (storedWishlist) {
+                wishlist = JSON.parse(storedWishlist);
+            } else {
+                wishlist = [];
+            }
+            updateWishlist();
+        }
+
         function addToWishlist(itemId) {
             const item = allProducts.find(item => item.id === itemId);
             if (!item) {
@@ -209,11 +259,12 @@
             const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
 
             if (!existingItem) {
-                wishlist.push({ ...item, quantity: 1 });
+                wishlist.push({ ...item });
+                saveWishlistToStorage();
+                updateWishlist();
             } else {
                 alert(`${item.name} is already in your wishlist!`);
             }
-            updateWishlist();
         }
 
         function updateWishlist() {
@@ -232,16 +283,32 @@
 
         function removeFromWishlist(itemId) {
             wishlist = wishlist.filter(item => item.id !== itemId);
+            saveWishlistToStorage();
             updateWishlist();
         }
 
         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
+            const cartContainer = document.getElementById('cartContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
             if (wishlistContainer) wishlistContainer.classList.toggle('active');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
 
         function clearWishlist() {
             wishlist = [];
+            saveWishlistToStorage();
             updateWishlist();
             alert('Your wishlist has been cleared!');
         }
@@ -255,6 +322,21 @@
             if (!detailsContainer) {
                 return;
             }
+
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+
             detailsContainer.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
                 <h2>${item.name}</h2>
@@ -297,11 +379,10 @@
                 return;
             }
 
-            itemList.innerHTML = ''; // Clear existing items
+            itemList.innerHTML = '';
 
             if (productsToDisplay.length === 0) {
                 noResultsMessage.style.display = 'block';
-                return;
             } else {
                 noResultsMessage.style.display = 'none';
             }
@@ -309,7 +390,7 @@
             productsToDisplay.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'item';
-                li.id = `item-${item.id}`; // Add ID for highlighting
+                li.id = `item-${item.id}`;
 
                 li.innerHTML = `
                     ${item.tag ? `<h5>${item.tag}</h5>` : ''}
@@ -324,7 +405,6 @@
                     <p class="small-text">free delivery</p>
                     <button onclick="showDetails(${item.id})">View Details</button>
                 `;
-
                 itemList.appendChild(li);
             });
 
@@ -343,7 +423,6 @@
         }
 
         function handlePageSearch(event) {
-            // Trigger search on Enter key press or button click
             if (event && event.type === 'keypress' && event.key !== 'Enter') {
                 return;
             }
@@ -361,8 +440,8 @@
         const currentPageProducts = allProducts.filter(p => p.category === 'cactus');
 
         window.addEventListener('load', () => {
-            loadCart(); // Load cart from local storage
-            // Check if there's a search query in the URL (e.g., from homepage search)
+            loadCart();
+            loadWishlist(); // Load wishlist from local storage
             const searchQuery = getUrlParameter('search');
 
             if (searchQuery) {
@@ -373,6 +452,42 @@
                 displayPageProducts(filtered, searchQuery);
             } else {
                 displayPageProducts(currentPageProducts);
+            }
+        });
+
+        document.getElementById('checkbtn').onclick = toggleMenu;
+
+        document.addEventListener('click', function(event) {
+            const cartContainer = document.getElementById('cartContainer');
+            const shoppingIcon = document.querySelector('.shopping');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const wishlistIcon = document.querySelector('.wishlist-icon');
+            const detailsContainer = document.getElementById('detailsContainer');
+            const viewDetailsButtons = document.querySelectorAll('.item button');
+            const menuToggleCheckbox = document.getElementById('check');
+            const checkBtn = document.getElementById('checkbtn');
+            const menuBar = document.getElementById('menuBar');
+
+            if (cartContainer && cartContainer.classList.contains('active') && !cartContainer.contains(event.target) && !shoppingIcon.contains(event.target)) {
+                cartContainer.classList.remove('active');
+            }
+
+            if (wishlistContainer && wishlistContainer.classList.contains('active') && !wishlistContainer.contains(event.target) && !wishlistIcon.contains(event.target)) {
+                wishlistContainer.classList.remove('active');
+            }
+
+            let clickedOnViewDetailsButton = false;
+            viewDetailsButtons.forEach(button => {
+                if (button.contains(event.target)) {
+                    clickedOnViewDetailsButton = true;
+                }
+            });
+            if (detailsContainer && detailsContainer.style.display === 'block' && !detailsContainer.contains(event.target) && !clickedOnViewDetailsButton) {
+                detailsContainer.style.display = 'none';
+            }
+
+            if (menuToggleCheckbox && menuToggleCheckbox.checked && !menuBar.contains(event.target) && !checkBtn.contains(event.target) && event.target !== menuToggleCheckbox) {
+                menuToggleCheckbox.checked = false;
             }
         });
     </script>
