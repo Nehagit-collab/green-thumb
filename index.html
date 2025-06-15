@@ -3,305 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Trade</title>
-     <link rel="stylesheet" href="style.css">
+    <title>Green Thumb</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Add this highlighting style to your style.css or keep it here for testing */
+        .highlight {
+            border: 2px solid #4CAF50; /* Green border */
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5); /* Soft green glow */
+            animation: pulse-highlight 1.5s infinite alternate; /* Gentle pulse effect */
+        }
+        @keyframes pulse-highlight {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+            }
+            to {
+                transform: scale(1.02); /* Slightly grow */
+                box-shadow: 0 0 25px rgba(76, 175, 80, 0.8); /* Stronger glow */
+            }
+        }
+    </style>
+</head>
 <body>
 
-<h1>Green<span> Thumb</span></h1>
+    <h1>Green<span> Thumb</span></h1>
 
-<input type="checkbox" id="check">
-<label for="check" >
-    <i class='bx  bx-menu' id="checkbtn"></i>
+    <input type="checkbox" id="check">
+    <label for="check">
+        <i class='bx bx-menu' id="checkbtn"></i>
+    </label>
+
+    <input type="text" id="searchInput" class="search-box" onkeypress="handleGlobalSearch(event)" placeholder="Search for your plants.....">
+    <button class="search-btn" onclick="handleGlobalSearch(null)"> <i class="fas fa-search"></i> </button>
    
-</label>
-
-<input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
-
-<div class="menu-bar">    
-<ul>
-<li><a href="index.html" class="active">Home</a></li>
-<li><a href="reviews.html">Reviews</a></li>
-<li><a href="contact.html">ContactUs</a></li>
-<li><a href="pp.html">Privacypolicy</a></li>
-<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
-         <li>
-         <div class="shopping" onclick="toggleCart()">
-         <i class="fas fa-shopping-cart"></i>
-         </div>
-         </li>
-         <li>
-         <div class="wishlist-icon" onclick="toggleWishlist()">
-         <i class="fas fa-heart"></i>
-         </div>
-        </li>
-   </ul>  
-</div>     
-        <div class="cart" id="cartContainer">
-            <h2>My Cart</h2>
-            <ul id="cart"></ul>
-            <div class="cart-total">
-             Total Cost: $<span id="totalCost">0.00</span>
-            </div>
-            <div class="checkout">
-                <div class="closeshopping" onclick="toggleCart()">Close</div>
-                <div onclick="buyItems()">Buy Now</div>
-            </div>
-        </div>
-
-
-        <div class="wishlist" id="wishlistContainer">
-            <h2>My Wishlist</h2>
-            <ul id="wishlist"></ul>
-            <div class="checkout">
-                <div class="closeshopping" onclick="toggleWishlist()">Close</div>
-                <div onclick="clearWishlist()">Clear Wishlist</div>
-            </div>
-            </div>
-        </div>
-
-
-
-<div class="webbody">
-<div class="slideshow-container">
-  <div class="mySlides fade">
-    <img src="add1.jpg" alt="img" style="width:100%" height="350">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="add3.png"alt="img"style="width:100%" height="350">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="add2.jpg" alt="img"style="width:100%" height="350">
-  </div>
-
-  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-  <a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-<br>
-
-<h2> ALL CATEGORIES</h2>
-<div class="cat-areas">
-<div class="cat-card">
-<a href="veg (1).html"><img src="cauli.jpeg">
-<p> Vegetable Saplings </P></a>
-</div>
-<div class="cat-card">
-<a href="flower1.html"><img src="flo.jpeg">
-<p>Flowering Plants</P></a>
-</div>
-<div class="cat-card">
-<a href="indoor1.html"><img src="peace.png" >
-<p>Indoor Plants</P></a>
-</div>
-<div class="cat-card">
-<a href="herb1.html"><img src="min.png" >
-<p>Herbs (Ayurvedic)</P></a>
-</div>
-<div class="cat-card">
-<a href="leafy1.html"><img src="mon.png" >
-<p>Leafy Plants</P></a>
-</div>
-<div class="cat-card">
-<a href="bonsai1.html"><img src="bonnew.jpg" >
-<p>Bonsai Plants</P></a>
-</div>
-<div class="cat-card">
-<a href="Cactus1.html"><img src="cactus.jpg">
-<p>Catcus Plants</P></a>
-</div>
-</div>
-<ul id="itemList" class="item-list"></ul>
-<div id="noResultsMessage" style="display: none;">No products found.</div>
-<div class="wishlist">
-            <h2>Wishlist</h2>
-            <ul id="wishlist"></ul>
-        </div>
-
-        <div class="cart">
-            <h2>Cart</h2>
-            <ul id="cart"></ul>
-            <button onclick="buyItems()">Buy</button>
-        </div>
-
-        <div id="detailsContainer" class="details-container"></div>
-    </div>
-<div class="heading">
-<h1><span> about </span> us </h1></div>
-<div class="container">
-<section class="about">
-<div class="about-image">
-<img src="ab.jpeg" alt="img">
-</div>
-<div class="about-content">
-<h3>what special about us!</h3>
-<p>Our website offers a complete plant buying and selling experience with expert care guides, personalized recommendations based on user preferences and home conditions, and eco-friendly packaging. We support local growers and provide a subscription service for seasonal plants and care products. Users can visualize plants in their space using augmented reality and connect through community forums and user-generated content. Additional features include a plant health tracking tool, custom planters, a plant swap program, local delivery, and educational resources like blogs and webinars—making us a one-stop destination for plant lovers.
- </p>
-</div>
-</section>
-</div>
-    
-<footer>
-            <div class="footer-content">
-                <div class="footer-section about">
-                                       <div class="contact">
-                        <span><i class="fas fa-phone"></i> &nbsp; 81297*****</span>
-                        <span><i class="fas fa-envelope"></i> &nbsp; GreenThumb@gmail.com</span>
-                    </div>
-                    <div class="socials">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
+    <div class="menu-bar">    
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="reviews.html">Reviews</a></li>
+            <li><a href="contact.html">ContactUs</a></li>
+            <li><a href="pp.html">Privacy Policy</a></li>
+            <li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+            <li>
+                <div class="shopping" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
                 </div>
-            </div>
+            </li>
+            <li>
+                <div class="wishlist-icon" onclick="toggleWishlist()">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </li>
+        </ul>    
+    </div>    
 
-            <div class="footer-bottom">
-                &copy; 2024 GreenThumb.com | Designed by neha
+    <div class="cart" id="cartContainer">
+        <h2>My Cart</h2>
+        <ul id="cart"></ul>
+        <div class="cart-total">
+            Total Cost: $<span id="totalCost">0.00</span>
+        </div>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleCart()">Close</div>
+            <div onclick="buyItems()">Buy Now</div>
+        </div>
+    </div>
+
+    <div class="wishlist" id="wishlistContainer">
+        <h2>My Wishlist</h2>
+        <ul id="wishlist"></ul>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleWishlist()">Close</div>
+            <div onclick="clearWishlist()">Clear Wishlist</div>
+        </div>
+    </div>
+
+    <div class="webbody">
+
+        <div class="slideshow-container">
+            <div class="mySlides fade"><img src="add1.jpg" style="width:100%" height="350"></div>
+            <div class="mySlides fade"><img src="add3.png" style="width:100%" height="350"></div>
+            <div class="mySlides fade"><img src="add2.jpg" style="width:100%" height="350"></div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+
+        <br>
+        <h2>ALL CATEGORIES</h2>
+        <div class="cat-areas">
+            <div class="cat-card"><a href="veg.html"><img src="cauli.jpeg"><p>Vegetable Saplings</p></a></div>
+            <div class="cat-card"><a href="flower1.html"><img src="flo.jpeg"><p>Flowering Plants</p></a></div>
+            <div class="cat-card"><a href="indoor1.html"><img src="peace.png"><p>Indoor Plants</p></a></div>
+            <div class="cat-card"><a href="herb1.html"><img src="min.png"><p>Herbs (Ayurvedic)</p></a></div>
+            <div class="cat-card"><a href="leafy1.html"><img src="mon.png"><p>Leafy Plants</p></a></div>
+            <div class="cat-card"><a href="bonsai1.html"><img src="bonnew.jpg"><p>Bonsai Plants</p></a></div>
+            <div class="cat-card"><a href="Cactus1.html"><img src="cactus.jpg"><p>Cactus Plants</p></a></div>
+        </div>
+
+        <ul id="itemList" class="item-list"></ul>
+        <div id="noResultsMessage" style="display: none; text-align: center; margin-top: 20px;">
+            No products found matching your search.
+        </div>
+        <div id="detailsContainer" class="details-container"></div>
+
+    </div>
+
+    <div class="heading"><h1><span>About</span> Us</h1></div>
+    <div class="container">
+        <section class="about">
+            <div class="about-image"><img src="ab.jpeg" alt="About Us Image"></div>
+            <div class="about-content">
+                <h3>What’s special about us?</h3>
+                <p>Our platform offers a complete plant buying and selling experience with expert care guides, personalized recommendations, eco-friendly packaging, and a plant health tracking tool. We support local growers, offer subscriptions, and foster a vibrant plant community.</p>
             </div>
-        </footer>
-<script>const items = [
-            { id: 1, name: 'Fiddle Leaf Fig', price: 29.99, tag:'NEW ARRIVAL', image: 'fiddle.png', description: ['A beautiful indoorabankLaakamDaisy.'],reviews:['Beautiful leaves!']},
-            { id: 2, name: 'Monstera Delica', price: 34.99, tag:'50% off', image: 'mon.png', description: 'Known for its large leaves.', reviews: ['Beautiful leaves!', 'Very healthy!'] },
-            { id: 3, name: 'Snake Plant', price: 19.99,tag:'BEST SELLER', image: 'snake.png', description: 'Easy to care for.', reviews: ['Easy to care!', 'Nice and tall!'] },
-            { id: 4, name: 'Spider Plant', price: 14.99,tag:'POPULAR', image: 'spider.png', description: 'Grows fast and is very resilient.', reviews: ['Grows fast!', 'Very resilient!'] },
-            { id: 5, name: 'Peace Lily', price: 24.99, tag:'NEW ARRIVAL', image: 'peace.png', description: 'A great plant for low light.', reviews: ['Beautiful flowers!', 'Easy to maintain!'] },
-            { id: 6, name: 'Aloe Vera', price: 12.99, tag:'90% OFF', image: 'aloe.png', description: 'Perfect for skincare.', reviews: ['Very useful!', 'Grows well!'] },
-            { id: 7, name: 'ZZ Plant', price: 22.99, tag:'POPULAR', image: 'zz.png', description: 'Tolerates neglect.', reviews: ['Hardy plant!', 'Looks great!'] },
-            { id: 8, name: 'Rubber Plant', price: 27.99, tag:'75% OFF',image: 'rubber.png', description: 'Has large, glossy leaves.', reviews: ['Shiny leaves!', 'Easy to grow!'] },
-            { id: 9, name: 'Rose', price: 18.99, tag:'BEST SELLER', image: 'rose.png', description: 'Rose plants require a balanced fertilizer to promote healthy growth, blooming, and flowering. ', reviews: ['Fertilize rose plants regularly', 'They are heavy feeders'] },
-            { id: 10, name: 'Marigold', price: 26.99,tag:'NEW ARRIVAL', image: 'flo.png', description: 'Marigold plants are relatively easy to care for and can thrive in a variety of conditions. ', reviews: [ 'Soil pH: Marigold plants prefer slightly acidic to neutral soil',
-'Soil type: Well-draining soil with organic matter'
-,' Avoid overfertilizing, as this can lead to weak growth and fewer blooms'] }
-        ];
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact">
+                <span><i class="fas fa-phone"></i> &nbsp; 81297*****</span>
+                <span><i class="fas fa-envelope"></i> &nbsp; GreenThumb@gmail.com</span>
+            </div>
+            <div class="socials">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2024 GreenThumb.com | Designed by Neha</div>
+    </footer>
+
+    <script src="allProducts.js"></script>
+
+    <script>
+        // Your cart and wishlist state variables (now using allProducts for item details)
         let wishlist = [];
         let cart = [];
-function filterItems() {
-    const searchInput = document.getElementById('searchInput');
-    const filter = searchInput.value.toLowerCase();
-    const itemList = document.getElementById('itemList');
-    const noResultsMessage = document.getElementById('noResultsMessage');
 
-    itemList.innerHTML = '';
-   
-    let hasResults = false;
-    items.forEach(item => {
-        if (item.name.toLowerCase().includes(filter)) {
-            hasResults = true;
-
-            const li = document.createElement('li');
-            li.className = 'item';
-            li.innerHTML = `
-                <h5>${item.tag}</h5>
-                <img src="${item.image}" alt="${item.name}"> 
-                <h3>${item.name}</h3>
-                <h4>$${item.price}</h4>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <p class="small-text">free delivery</p>
-                <button onclick="showDetails(${item.id})">View Details</button>
-            `;
-            itemList.appendChild(li);
-        }
-    });
-
-    
-    if (hasResults) {
-        noResultsMessage.style.display = 'none';
-    } else {
-        noResultsMessage.style.display = 'block';
-    }
-}
-        
-        function showDetails(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const detailsContainer = document.getElementById('detailsContainer');
-            detailsContainer.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
-                <h2>${item.name}</h2>
-                <p>${item.description}</p>
-                <h3>Price: $${item.price}</h3>
-                <button onclick="addToCart(${item.id})">Add to Cart</button>
-                <button onclick="buyNow(${item.id})">Buy Now</button>
-                <button onclick="closeDetails()">Close</button>
-                <button onclick="addToWishlist(${item.id})"><li class="fas fa-heart"></i></button>
-                <h4>Some additional tips</h4>
-                <ul>
-                    ${item.reviews.map(review => `<li>${review}</li>`).join('')}
-                </ul>
-            `;
-            detailsContainer.style.display = 'block';
-        }
-
-        function closeDetails() {
-            const detailsContainer = document.getElementById('detailsContainer');
-            detailsContainer.style.display = 'none';
-        }
-        
-        
-        function addToCart(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const existingItem = cart.find(cartItem => cartItem.id === itemId);
-            
-            if (existingItem) {
-                existingItem.quantity+=1;
+        // --- Cart Functions (now use `allProducts` for item details) ---
+        function loadCart() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
             } else {
-                cart.push({ ...item, quantity: 1 });
+                cart = [];
             }
-            
             updateCart();
         }
 
-        function addToWishlist(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
-            
-            if (!existingItem) {
-                wishlist.push({ ...item, quantity: 1 });
-            }
-            
-            updateWishlist();
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
+
+        function addToCart(itemId) {
+            // Ensure you find the item from allProducts if showDetails can be called on any product
+            const item = allProducts.find(i => i.id === itemId);
+            if (!item) {
+                console.error('Item not found in allProducts:', itemId);
+                return;
+            }
+            const found = cart.find(i => i.id === itemId);
+            if (found) found.quantity++;
+            else cart.push({ ...item, quantity: 1 });
+
+            saveCartToStorage();
+            updateCart();
+        }
+
         function updateCart() {
             const cartList = document.getElementById('cart');
-         
-            const totalCostSpan= document.getElementById('totalCost');
+            const totalCostSpan = document.getElementById('totalCost');
+            if (!cartList || !totalCostSpan) {
+                console.error("Cart elements not found.");
+                return;
+            }
             cartList.innerHTML = '';
-            let totalCost = 0;
+            let total = 0;
 
             cart.forEach(item => {
+                total += item.price * item.quantity;
                 const li = document.createElement('li');
-                li.innerHTML = ` <img src="${item.image}" alt="${item.name}">
-            <span>${item.name} (${item.quantity})</span>
-            <span>$${(item.price * item.quantity).toFixed(2)}</span>`;
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} (${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
                 cartList.appendChild(li);
-                totalCost += item.price * item.quantity;
             });
+            totalCostSpan.textContent = total.toFixed(2);
+        }
 
-            totalCostSpan.textContent = totalCost.toFixed(2);
+        function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            if (cartContainer) cartContainer.classList.toggle('active');
+        }
+
+        function buyItems() {
+            if (cart.length > 0) {
+                alert('Thank you for your purchase!');
+                cart = [];
+                saveCartToStorage(); // Clear cart in storage
+                updateCart();
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        // --- Wishlist Functions (now use `allProducts` for item details) ---
+        function addToWishlist(itemId) {
+            // Find item from allProducts
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                console.error('Item not found in allProducts:', itemId);
+                return;
+            }
+            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+
+            if (!existingItem) {
+                wishlist.push({ ...item, quantity: 1 });
+            } else {
+                alert(`${item.name} is already in your wishlist!`);
+            }
+            updateWishlist();
         }
 
         function updateWishlist() {
             const wishlistList = document.getElementById('wishlist');
+            if (!wishlistList) {
+                console.error("Wishlist element not found.");
+                return;
+            }
             wishlistList.innerHTML = '';
 
             wishlist.forEach(item => {
                 const li = document.createElement('li');
                 li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price} (x${item.quantity}) <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
                 wishlistList.appendChild(li);
-            });         
+            });
         }
-
-
-
-        
 
         function removeFromWishlist(itemId) {
             wishlist = wishlist.filter(item => item.id !== itemId);
@@ -310,72 +248,173 @@ function filterItems() {
 
         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
-            wishlistContainer.classList.toggle('active');
+            if (wishlistContainer) wishlistContainer.classList.toggle('active');
         }
 
         function clearWishlist() {
             wishlist = [];
             updateWishlist();
+            alert('Your wishlist has been cleared!');
         }
 
-        function buyItems() {
-            if (cart.length > 0) {
-                alert('Thank you for your purchase!');
-                cart = [];
-                updateCart();
-            } else {
-                alert('Your cart is empty!');
+        // --- Details Display Function (now uses allProducts) ---
+        function showDetails(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                console.error('Item not found for details:', itemId);
+                return;
             }
+            const detailsContainer = document.getElementById('detailsContainer');
+            if (!detailsContainer) {
+                console.error("Details container not found.");
+                return;
+            }
+            detailsContainer.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <h2>${item.name}</h2>
+                <p>${item.description}</p>
+                <h3>Price: $${item.price}</h3>
+                <button onclick="addToCart(${item.id})">Add to Cart</button>
+                <button onclick="buyNow(${item.id})">Buy Now</button>
+                <button onclick="closeDetails()">Close</button>
+                <button onclick="addToWishlist(${item.id})"><i class="fas fa-heart"></i></button>
+                <h4>Some additional tips</h4>
+                <ul>
+                    ${Array.isArray(item.reviews) ? item.reviews.map(review => `<li>${review}</li>`).join('') : `<li>${item.reviews}</li>`}
+                </ul>
+            `;
+            detailsContainer.style.display = 'block';
+        }
+
+        function closeDetails() {
+            const detailsContainer = document.getElementById('detailsContainer');
+            if (detailsContainer) detailsContainer.style.display = 'none';
         }
 
         function buyNow(itemId) {
-            const item = items.find(item => item.id === itemId);
-            alert(`Thank you for purchasing ${item.name}!`);
-            closeDetails();
-        }
-                function toggleCart() {
-            const cartContainer = document.getElementById('cartContainer');
-            cartContainer.classList.toggle('active');
+            const item = allProducts.find(item => item.id === itemId);
+            if (item) {
+                alert(`Thank you for purchasing ${item.name}!`);
+                closeDetails();
+            }
         }
 
+        // --- Slideshow Functions (from your original code) ---
+        let slideIndex = 1;
+        
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
 
-        window.onload = filterItems; 
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
 
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            // let dots = document.getElementsByClassName("dot"); // Uncomment if you have dots
+            if (slides.length === 0) {
+                // console.warn("Slideshow elements (.mySlides) not found.");
+                return;
+            }
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            // If you have dots, uncomment this loop and ensure 'dot' elements exist
+            /*
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            */
+            slides[slideIndex - 1].style.display = "block";
+            // If you have dots, uncomment this line
+            // dots[slideIndex-1].className += " active";
+        }
 
-let slideIndex = 1;
-showSlides(slideIndex);
+        // --- Navigation Function ---
+        function goToSellPage() {
+            window.location.href = 'sell1.html';
+        }
 
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
+        // Global search function triggered from the home page
+        function handleGlobalSearch(event) {
+            // Check if it's an Enter key press or a button click
+            if (event && event.type === 'keypress' && event.key !== 'Enter') {
+                return; // Only proceed if Enter is pressed
+            }
 
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.toLowerCase().trim();
+            console.log("Global Search Query:", query); // DEBUG: Log the search query
 
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
+            if (!query) {
+                alert('Please enter a plant name to search.');
+                return;
+            }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  
-}
+            // Find the product in the centralized allProducts array
+            const foundProduct = allProducts.find(product =>
+                product.name.toLowerCase().includes(query)
+            );
 
+            console.log("Found Product (Global Search):", foundProduct); // DEBUG: Log the found product
 
-function goToSellPage() {
-    window.location.href ='sell1.html';
-}
+            if (foundProduct) {
+                // Redirect to the correct page with the search query as a URL parameter
+                window.location.href = `${foundProduct.page}?search=${encodeURIComponent(query)}`;
+                console.log("Redirecting to:", `${foundProduct.page}?search=${encodeURIComponent(query)}`); // DEBUG: Log the redirect URL
+            } else {
+                // If not found, display a message on the current page
+                const itemList = document.getElementById('itemList');
+                const noResultsMessage = document.getElementById('noResultsMessage');
+                if (itemList) itemList.innerHTML = ''; // Clear any existing items
+                if (noResultsMessage) noResultsMessage.style.display = 'block'; // Show no results message
+                alert('No product found with that name across all categories.'); // Added alert for immediate feedback
+            }
+        }
 
-</script>
+        // Initial load for cart and potentially display some featured items on home page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded for index.html");
+            loadCart(); // Now loadCart is guaranteed to be defined
+            showSlides(slideIndex); // Also ensure slideshow initializes after DOM ready
+            // Display some featured products on the home page initially
+            // You can adjust this filter to show specific categories or just a few examples
+            const featuredProducts = allProducts.filter(p => p.page === 'index.html' || p.category === 'indoor').slice(0, 8); // Example: show some indoor plants
+            displayProductsOnHomePage(featuredProducts);
+        });
 
+        // Function to display products on the home page if desired (optional)
+        // This is separate from the global search.
+        function displayProductsOnHomePage(productsToDisplay) {
+            const itemList = document.getElementById('itemList');
+            if (!itemList) {
+                console.error("Error: 'itemList' element not found in index.html for displaying featured products.");
+                return;
+            }
+            itemList.innerHTML = ''; // Clear existing
+            productsToDisplay.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'item';
+                li.innerHTML = `
+                    ${item.tag ? `<h5>${item.tag}</h5>` : ''}
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <h4>$${item.price}</h4>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <p class="small-text">free delivery</p>
+                    <button onclick="showDetails(${item.id})">View Details</button>
+                `;
+                itemList.appendChild(li);
+            });
+        }
+    </script>
 </body>
 </html>

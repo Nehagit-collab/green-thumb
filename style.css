@@ -97,6 +97,17 @@
             margin-left: 50px;
         }
 
+      .search-btn{
+         width: 30px;
+         height: 30px;
+         border-radius: 50%;
+      }
+        .search-btn:hover{
+        color: black;
+        background-color:yellow;
+      }
+
+
         #noResultsMessage {
             display: none;
             text-align: center;

@@ -1,256 +1,233 @@
-<html>
-<head> 
-  <meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> green trade</title>
-  <link rel="stylesheet" href="style.css">
+    <title>Green Thumb - Bonsai Plants</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-   
+    <style>
+        .highlight {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+            animation: pulse-highlight 1.5s infinite alternate;
+        }
+        @keyframes pulse-highlight {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+            }
+            to {
+                transform: scale(1.02);
+                box-shadow: 0 0 25px rgba(76, 175, 80, 0.8);
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h1>Green<span> Thumb</span></h1>
+    <h1>Green<span> Thumb</span></h1>
 
-<input type="checkbox" id="check">
-<label for="check" >
-    <i class='bx  bx-menu' id="checkbtn"></i>
-   
-</label>
+    <input type="checkbox" id="check">
+    <label for="check">
+        <i class='bx bx-menu' id="checkbtn"></i>
+    </label>
 
-<input type="text" id="searchInput" class="search-box" onkeyup="filterItems()" placeholder="Search for your plants....." >
+    <input type="text" id="searchInput" class="search-box" onkeypress="handlePageSearch(event)" placeholder="Search for bonsai plants.....">
+    <button class="search-btn" onclick="handlePageSearch(null)"> <i class="fas fa-search"></i> </button>
 
-<div class="menu-bar">    
-<ul>
-<li><a href="index.html" class="active">Home</a></li>
-<li><a href="reviews.html">Reviews</a></li>
-<li><a href="contact.html">ContactUs</a></li>
-<li><a href="pp.html">Privacypolicy</a></li>
-<li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
-         <li>
-         <div class="shopping" onclick="toggleCart()">
-         <i class="fas fa-shopping-cart"></i>
-         </div>
-         </li>
-         <li>
-         <div class="wishlist-icon" onclick="toggleWishlist()">
-         <i class="fas fa-heart"></i>
-         </div>
-        </li>
-   </ul>  
-</div>
-         <div class="cart" id="cartContainer">
-            <h2>My Cart</h2>
-            <ul id="cart"></ul>
-            <div class="cart-total">
-                Total Cost: $<span id="totalCost">0.00</span>
-            </div>
-            <div class="checkout">
-                <div class="closeshopping" onclick="toggleCart()">Close</div>
-                <div onclick="buyItems()">Buy Now</div>
-            </div>
-        </div>
-        <div class="wishlist" id="wishlistContainer">
-            <h2>My Wishlist</h2>
-            <ul id="wishlist"></ul>
-            <div class="checkout">
-                <div class="closeshopping" onclick="toggleWishlist()">Close</div>
-                <div onclick="clearWishlist()">Clear Wishlist</div>
-            </div>
-        </div>
-    </div>
-
-</div>
-</div>
-<div class="body">
-<div class="banner-card">
-<img src="bonn.jpg"alt="image">
-<div class="banner-text">
-<h2>Bonsai Plants</h2>
-</div>
-</div>
-<div class="main">
-<ul id="itemList" class="item-list"></ul>
-<div class="wishlist">
-            <h2>Wishlist</h2>
-            <ul id="wishlist"></ul>
-        </div>
-
-        <div class="cart">
-            <h2>Cart</h2>
-            <ul id="cart"></ul>
-            <button onclick="buyItems()">Buy</button>
-        </div>
-
-        <div id="detailsContainer" class="details-container"></div>
-    </div>
-    
-<footer>
-            <div class="footer-content">
-                <div class="footer-section about">
-                                       <div class="contact">
-                        <span><i class="fas fa-phone"></i> &nbsp; 123-456-789</span>
-                        <span><i class="fas fa-envelope"></i> &nbsp; info@example.com</span>
-                    </div>
-                    <div class="socials">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
+    <div class="menu-bar">    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="reviews.html">Reviews</a></li>
+            <li><a href="contact.html">ContactUs</a></li>
+            <li><a href="pp.html">Privacypolicy</a></li>
+            <li><button onclick="goToSellPage()" class="sell-button">SELL</button></li>
+            <li>
+                <div class="shopping" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
                 </div>
+            </li>
+            <li>
+                <div class="wishlist-icon" onclick="toggleWishlist()">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </li>
+        </ul>    
+    </div>    
 
+    <div class="cart" id="cartContainer">
+        <h2>My Cart</h2>
+        <ul id="cartList"></ul>
+        <div class="cart-total">
+            Total Cost: $<span id="totalCost">0.00</span>
+        </div>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleCart()">Close</div>
+            <div onclick="buyItems()">Buy Now</div>
+        </div>
+    </div>
 
-            <div class="footer-bottom">
-                &copy; 2024 GreenThumb.com | Designed N4
+    <div class="wishlist" id="wishlistContainer">
+        <h2>My Wishlist</h2>
+        <ul id="wishlistList"></ul>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleWishlist()">Close</div>
+            <div onclick="clearWishlist()">Clear Wishlist</div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="banner-card">
+            <img src="bonn.jpg" alt="Bonsai Plants Banner">
+            <div class="banner-text">
+                <h2>Bonsai Plants</h2>
             </div>
-            
-        </footer>
-</body>
-</html>
-<script>
-const items = [
-            { id: 1, name: 'Ficus', price: 400.99,image: 'ficus.png', description: 'The spider plant is a lively low-maintenance houseplant with arching green leaves and playful white-striped offsets making it a charming and easy-to-care-for addition to any home',reviews:['Light: Bright, indirect light is best. Too much direct sunlight can scorch the leaves.'
-,'Water: Keep the soil slightly moist. Water when the top inch of soil feels dry.','Humidity: Spider plants like humidity but can tolerate average household levels.','Temperature: They prefer temperatures between 65-75°F (18-24°C).']},
-            { id: 2, name: 'Junior', price: 890.99, image: 'jun.png', description: 'The snake plant is a resilient low-maintenance plant with tall upright leaves and striking patterns ideal for adding greenery with minimal care.', reviews: ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix'] },
-            { id: 3, name: 'Pine', price: 120.99, image: 'pine.png', description: 'The peace lily is a graceful plant with glossy green leaves and elegant white blooms that thrive in low light and add a touch of serenity to any indoor space.', reviews:  ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix']  },
-            { id: 4, name: 'Maple', price: 170.99, image: 'map.png', description: 'Aloe vera is a succulent plant with thick fleshy leaves that contain a soothing gel used for its healing properties and requires minimal care.', reviews: ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix']  },
-            { id: 5, name: 'Chinese elm', price: 128.99, image: 'elm.png', description: 'The Boston fern is a lush and feathery plant with delicate, arching fronds that thrives in humidity and adds a touch of classic greenery to indoor environments.', reviews: ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidityz levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix'] },
-            { id: 6, name:'Jade Plant', price: 796.99, image: 'jade.png', description: 'The money plant is a hardy and adaptable vine with heart-shaped leaves that is often grown for its easy care and believed to bring good fortune and prosperity.', reviews: ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix']  },
-            { id: 7, name:'Bougainvillea', price: 222.99, image: 'bou.jpg', description: 'The ZZ plant is a robust and low-maintenance houseplant with glossy, dark green leaves that thrives in low light and infrequent watering.', reviews:  ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix']  },
-            { id: 8, name: 'Azalea', price: 790.99, image: 'azl.png', description: 'The Philodendron is a versatile and low-maintenance plant with heart-shaped leaves that adds lush greenery to indoor spaces and adapts well to various light conditions..', reviews:  ['Light: Thrives in low to bright indirect light. Tolerates some direct sunlight.',
- 'Water: Water sparingly; allow the soil to dry out completely between waterings.','Humidity: Adaptable to a range of humidity levels.','Temperature: Prefers temperatures between 60-75°F (15-24°C).','Soil: Use a well-draining potting mix, like a cactus or succulent mix']  },
-            
-        ];
+        </div>
+
+        <div class="main">
+            <ul id="itemList" class="item-list"></ul>
+            <div id="detailsContainer" class="details-container"></div>
+            <div id="noResultsMessage" style="display: none; text-align: center; margin-top: 20px;">
+                No results found for your search.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <div class="contact">
+                    <span><i class="fas fa-phone"></i> &nbsp; 81297*****</span>
+                    <span><i class="fas fa-envelope"></i> &nbsp; GreenThumb@gmail.com</span>
+                </div>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2024 GreenThumb.com | Designed by N4
+        </div>
+    </footer>
+
+    <script src="allProducts.js"></script>
+
+    <script>
         let wishlist = [];
         let cart = [];
-function filterItems() {
-    const searchInput = document.getElementById('searchInput');
-    const filter = searchInput.value.toLowerCase();
-    const itemList = document.getElementById('itemList');
-    const noResultsMessage = document.getElementById('noResultsMessage');
 
-    itemList.innerHTML = '';
-   
-    let hasResults = false;
-    items.forEach(item => {
-        if (item.name.toLowerCase().includes(filter)) {
-            hasResults = true;
-
-            const li = document.createElement('li');
-            li.className = 'item';
-            li.innerHTML = `
-                <img src="${item.image}" alt="${item.name}"> 
-                <h3>${item.name}</h3>
-                <h4>$${item.price}</h4>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <span><i class="fas fa-star"></i></span>
-                <p class="small-text">free delivery</p>
-                <button onclick="showDetails(${item.id})">View Details</button>
-            `;
-            itemList.appendChild(li);
-        }
-    });
-
-    
-    if (hasResults) {
-        noResultsMessage.style.display = 'none';
-    } else {
-        noResultsMessage.style.display = 'block';
-    }
-}
-        
-        function showDetails(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const detailsContainer = document.getElementById('detailsContainer');
-            detailsContainer.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
-                <h2>${item.name}</h2>
-                <p>${item.description}</p>
-                <h3>Price: $${item.price}</h3>
-                <button onclick="addToCart(${item.id})">Add to Cart</button>
-                <button onclick="buyNow(${item.id})">Buy Now</button>
-                <button onclick="closeDetails()">Close</button>
-                <button onclick="addToWishlist(${item.id})"><li class="fas fa-heart"></i></button>
-                <h4>Some additional tips</h4>
-                <ul>
-                    ${item.reviews.map(review => `<li>${review}</li>`).join('')}
-                </ul>
-            `;
-            detailsContainer.style.display = 'block';
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
-        function closeDetails() {
-            const detailsContainer = document.getElementById('detailsContainer');
-            detailsContainer.style.display = 'none';
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
-        
-        
-        function addToCart(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const existingItem = cart.find(cartItem => cartItem.id === itemId);
-            
-            if (existingItem) {
-                existingItem.quantity+=1;
+
+        function loadCart() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
             } else {
-                cart.push({ ...item, quantity: 1 });
+                cart = [];
             }
-            
             updateCart();
         }
 
-        function addToWishlist(itemId) {
-            const item = items.find(item => item.id === itemId);
-            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
-            
-            if (!existingItem) {
-                wishlist.push({ ...item, quantity: 1 });
+        function addToCart(itemId) {
+            const item = allProducts.find(i => i.id === itemId);
+            if (!item) {
+                return;
             }
-            
-            updateWishlist();
+            const found = cart.find(i => i.id === itemId);
+            if (found) found.quantity++;
+            else cart.push({ ...item, quantity: 1 });
+
+            saveCartToStorage();
+            updateCart();
         }
+
         function updateCart() {
-            const cartList = document.getElementById('cart');
-         
-            const totalCostSpan= document.getElementById('totalCost');
+            const cartList = document.getElementById('cartList'); // Changed ID
+            const totalCostSpan = document.getElementById('totalCost');
+            if (!cartList || !totalCostSpan) {
+                return;
+            }
             cartList.innerHTML = '';
-            let totalCost = 0;
+            let total = 0;
 
             cart.forEach(item => {
+                total += item.price * item.quantity;
                 const li = document.createElement('li');
-                li.innerHTML = ` <img src="${item.image}" alt="${item.name}">
-            <span>${item.name} (${item.quantity})</span>
-            <span>$${(item.price * item.quantity).toFixed(2)}</span>`;
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} (${item.quantity}) - $${(item.price * item.quantity).toFixed(2)} <button onclick="removeFromCart(${item.id})">Remove</button>`;
                 cartList.appendChild(li);
-                totalCost += item.price * item.quantity;
             });
+            totalCostSpan.textContent = total.toFixed(2);
+        }
 
-            totalCostSpan.textContent = totalCost.toFixed(2);
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            if (cartContainer) cartContainer.classList.toggle('active');
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCart();
+        }
+
+        function buyItems() {
+            if (cart.length > 0) {
+                alert('Thank you for your purchase!');
+                clearCart();
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        function addToWishlist(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                return;
+            }
+            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+
+            if (!existingItem) {
+                wishlist.push({ ...item, quantity: 1 });
+            } else {
+                alert(`${item.name} is already in your wishlist!`);
+            }
+            updateWishlist();
         }
 
         function updateWishlist() {
-            const wishlistList = document.getElementById('wishlist');
+            const wishlistList = document.getElementById('wishlistList'); // Changed ID
+            if (!wishlistList) {
+                return;
+            }
             wishlistList.innerHTML = '';
 
             wishlist.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price} (x${item.quantity}) <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price} <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
                 wishlistList.appendChild(li);
-            });         
+            });
         }
-
-
-
-        
 
         function removeFromWishlist(itemId) {
             wishlist = wishlist.filter(item => item.id !== itemId);
@@ -259,72 +236,144 @@ function filterItems() {
 
         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
-            wishlistContainer.classList.toggle('active');
+            if (wishlistContainer) wishlistContainer.classList.toggle('active');
         }
 
         function clearWishlist() {
             wishlist = [];
             updateWishlist();
+            alert('Your wishlist has been cleared!');
         }
 
-        function buyItems() {
-            if (cart.length > 0) {
-                alert('Thank you for your purchase!');
-                cart = [];
-                updateCart();
-            } else {
-                alert('Your cart is empty!');
+        function showDetails(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                return;
             }
+            const detailsContainer = document.getElementById('detailsContainer');
+            if (!detailsContainer) {
+                return;
+            }
+            detailsContainer.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <h2>${item.name}</h2>
+                <p>${item.description}</p>
+                <h3>Price: $${item.price}</h3>
+                <button onclick="addToCart(${item.id})">Add to Cart</button>
+                <button onclick="buyNow(${item.id})">Buy Now</button>
+                <button onclick="closeDetails()">Close</button>
+                <button onclick="addToWishlist(${item.id})"><i class="fas fa-heart"></i></button>
+                <h4>Some additional tips</h4>
+                <ul>
+                    ${Array.isArray(item.reviews) ? item.reviews.map(review => `<li>${review}</li>`).join('') : `<li>${item.reviews}</li>`}
+                </ul>
+            `;
+            detailsContainer.style.display = 'block';
+        }
+
+        function closeDetails() {
+            const detailsContainer = document.getElementById('detailsContainer');
+            if (detailsContainer) detailsContainer.style.display = 'none';
         }
 
         function buyNow(itemId) {
-            const item = items.find(item => item.id === itemId);
-            alert(`Thank you for purchasing ${item.name}!`);
-            closeDetails();
-        }
-                function toggleCart() {
-            const cartContainer = document.getElementById('cartContainer');
-            cartContainer.classList.toggle('active');
+            const item = allProducts.find(item => item.id === itemId);
+            if (item) {
+                alert(`Thank you for purchasing ${item.name}!`);
+                closeDetails();
+            }
         }
 
+        function goToSellPage() {
+            window.location.href = 'sell1.html';
+        }
 
-        window.onload = filterItems; 
+        function displayPageProducts(productsToDisplay, highlightQuery = '') {
+            const itemList = document.getElementById('itemList');
+            const noResultsMessage = document.getElementById('noResultsMessage');
 
+            if (!itemList || !noResultsMessage) {
+                return;
+            }
 
-let slideIndex = 1;
-showSlides(slideIndex);
+            itemList.innerHTML = '';
 
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
+            if (productsToDisplay.length === 0) {
+                noResultsMessage.style.display = 'block';
+                return;
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
 
+            productsToDisplay.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'item';
+                li.id = `item-${item.id}`; // Add ID for highlighting
 
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
+                li.innerHTML = `
+                    ${item.tag ? `<h5>${item.tag}</h5>` : ''}
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <h4>$${item.price}</h4>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <span><i class="fas fa-star"></i></span>
+                    <p class="small-text">free delivery</p>
+                    <button onclick="showDetails(${item.id})">View Details</button>
+                `;
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  
-  dots[slideIndex-1].className += " active";
-}
+                itemList.appendChild(li);
+            });
 
+            if (highlightQuery) {
+                const highlightedItem = productsToDisplay.find(item =>
+                    item.name.toLowerCase().includes(highlightQuery.toLowerCase())
+                );
+                if (highlightedItem) {
+                    const itemElement = document.getElementById(`item-${highlightedItem.id}`);
+                    if (itemElement) {
+                        itemElement.classList.add('highlight');
+                        setTimeout(() => itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+                    }
+                }
+            }
+        }
 
-function goToSellPage() {
-    window.location.href ='sell1.html';
-}
+        function handlePageSearch(event) {
+            if (event && event.type === 'keypress' && event.key !== 'Enter') {
+                return;
+            }
 
-</script>
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.toLowerCase().trim();
+
+            const filtered = currentPageProducts.filter(product =>
+                product.name.toLowerCase().includes(query)
+            );
+            displayPageProducts(filtered, query);
+        }
+
+        // Filter allProducts to only show bonsai plants for this page
+        const currentPageProducts = allProducts.filter(p => p.category === 'bonsai');
+
+        window.addEventListener('load', () => {
+            loadCart();
+            // Check if there's a search query in the URL (e.g., from homepage search)
+            const searchQuery = getUrlParameter('search');
+
+            if (searchQuery) {
+                document.getElementById('searchInput').value = searchQuery;
+                const filtered = currentPageProducts.filter(product =>
+                    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+                displayPageProducts(filtered, searchQuery);
+            } else {
+                displayPageProducts(currentPageProducts);
+            }
+        });
+    </script>
 
 </body>
 </html>

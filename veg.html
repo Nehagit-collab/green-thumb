@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Thumb - Leafy Plants</title>
+    <title>Green Thumb - Vegetable Saplings</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -35,7 +35,7 @@
         <i class='bx bx-menu' id="checkbtn"></i>
     </label>
 
-    <input type="text" id="searchInput" class="search-box" onkeypress="handlePageSearch(event)" placeholder="Search for leafy plants.....">
+    <input type="text" id="searchInput" class="search-box" onkeypress="handlePageSearch(event)" placeholder="Search for vegetables.....">
     <button class="search-btn" onclick="handlePageSearch(null)"> <i class="fas fa-search"></i> </button>
 
     <div class="menu-bar">    
@@ -81,9 +81,9 @@
 
     <div class="body">
         <div class="banner-card">
-            <img src="lea.jpg" alt="Leafy Plants Banner">
+            <img src="sap.jpg" alt="image">
             <div class="banner-text">
-                <h2>Leafy Plants</h2>
+                <h2>Vegetables Saplings</h2>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
         </div>
 
         <div class="footer-bottom">
-            &copy; 2024 GreenThumb.com | Designed by Neha
+            &copy; 2024 GreenThumb.com | Designed by neha
         </div>
     </footer>
 
@@ -150,7 +150,6 @@
         }
 
         function addToCart(itemId) {
-            // Use allProducts array
             const item = allProducts.find(i => i.id === itemId);
             if (!item) {
                 console.error('Item not found in allProducts:', itemId);
@@ -211,7 +210,6 @@
 
         // Wishlist Functions
         function addToWishlist(itemId) {
-            // Use allProducts array
             const item = allProducts.find(item => item.id === itemId);
             if (!item) {
                 console.error('Item not found in allProducts:', itemId);
@@ -260,7 +258,6 @@
 
         // Details Display Functions
         function showDetails(itemId) {
-            // Use allProducts array
             const item = allProducts.find(item => item.id === itemId);
             if (!item) {
                 console.error('Item not found for details:', itemId);
@@ -294,7 +291,6 @@
         }
 
         function buyNow(itemId) {
-            // Use allProducts array
             const item = allProducts.find(item => item.id === itemId);
             if (item) {
                 alert(`Thank you for purchasing ${item.name}!`);
@@ -307,9 +303,9 @@
             window.location.href = 'sell1.html';
         }
 
-        // Function to display products on this page (leafy plants)
+        // Function to display products on this page (vegetables)
         function displayPageProducts(productsToDisplay, highlightQuery = '') {
-            console.log("Function displayPageProducts called for Leafy Plants."); // DEBUG
+            console.log("Function displayPageProducts called."); // DEBUG
             console.log("Products to Display:", productsToDisplay); // DEBUG: The actual products being passed
             console.log("Highlight Query:", highlightQuery); // DEBUG: The highlight query being passed
 
@@ -317,7 +313,7 @@
             const noResultsMessage = document.getElementById('noResultsMessage');
 
             if (!itemList || !noResultsMessage) { // Added checks for elements
-                console.error("Error: 'itemList' or 'noResultsMessage' elements not found in leafy1.html.");
+                console.error("Error: 'itemList' or 'noResultsMessage' elements not found in veg.html.");
                 return;
             }
 
@@ -375,14 +371,12 @@
 
         // Local search function for this page
         function handlePageSearch(event) {
-            // Check if it's an Enter key press or a button click
             if (event && event.type === 'keypress' && event.key !== 'Enter') {
-                return; // Only proceed if Enter is pressed
+                return;
             }
-
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value.toLowerCase().trim();
-            console.log("Local Page Search Query (Leafy Plants):", query); // DEBUG
+            console.log("Local Page Search Query:", query); // DEBUG
 
             const filtered = currentPageProducts.filter(product =>
                 product.name.toLowerCase().includes(query)
@@ -391,28 +385,28 @@
             displayPageProducts(filtered, query); // Pass the query for potential highlighting
         }
 
-        // Filter products specifically for this page (leafy plants)
+        // Filter products specifically for this page (vegetables)
         // This MUST be after allProducts.js is loaded and before currentPageProducts is used
-        const currentPageProducts = allProducts.filter(p => p.category === 'leafy');
-        console.log("currentPageProducts (all leafy plants on load):", currentPageProducts); // DEBUG: All leafy plant products
+        const currentPageProducts = allProducts.filter(p => p.category === 'vegetable');
+        console.log("currentPageProducts (all vegetables on veg.html load):", currentPageProducts); // DEBUG: All vegetable products
 
         // On page load, check for a search query in the URL and display products
         window.addEventListener('load', () => {
-            console.log("Window loaded on leafy1.html. Initializing..."); // DEBUG
-            loadCart(); // Load cart state
+            console.log("Window loaded on veg.html. Initializing..."); // DEBUG
+            loadCart(); // Load cart state (now defined above)
             const searchQuery = getUrlParameter('search');
-            console.log("Search Query on leafy1.html load:", searchQuery); // DEBUG: Query from URL
+            console.log("Search Query on veg.html load:", searchQuery); // DEBUG: Query from URL
 
             if (searchQuery) {
                 document.getElementById('searchInput').value = searchQuery; // Populate search box
-                const filtered = currentPageProducts.filter(product => // currentPageProducts already contains ALL leafy plants
+                const filtered = currentPageProducts.filter(product => // currentPageProducts already contains ALL vegetables
                     product.name.toLowerCase().includes(searchQuery.toLowerCase())
                 );
                 console.log("Filtered Products (from URL search query):", filtered); // DEBUG: Products found by URL search
                 displayPageProducts(filtered, searchQuery); // Pass searchQuery for highlighting
             } else {
                 console.log("No search query in URL. Displaying all currentPageProducts."); // DEBUG
-                displayPageProducts(currentPageProducts); // Display all leafy plants if no search query
+                displayPageProducts(currentPageProducts); // Display all vegetables if no search query
             }
         });
     </script>
