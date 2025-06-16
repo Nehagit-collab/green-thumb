@@ -313,35 +313,19 @@ footer {
     color: #fff;
     padding: 25px 0;
     width: 100%;
+   
 }
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.footer-section {
-    padding: 0 20px;
-    flex: 1;
-}
-
-.contact span {
-    display: block;
-    margin-bottom: 8px;
-    color: #ddd;
-    font-size: 18px;
-    margin-left: 20px;
-}
-
 .socials {
     margin-top: 10px;
+    margin-left: 45%;
+    margin-bottom: 20px;
+    align-items: center;
 }
 
 .socials a {
     color: #fff;
     font-size: 22px;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .socials a:hover {
@@ -354,7 +338,7 @@ footer {
     background-color: #636363;
     color: #ccc;
     font-size: 16px;
-    width: 100%;
+    width: 96%;
 }
 
 .item-list {
@@ -386,7 +370,7 @@ footer {
 }
 
 .item h5 {
-    background-color: yellow;
+    background-color: rgb(221, 255, 2);
     color: black;
     border-radius: 3px;
     border: none;
@@ -553,18 +537,24 @@ span {
     .about-content {
         margin-top: 0px;
     }
-
+.socials{
+    margin-left: 38%;
+}
     .socials a {
         color: #fff;
         font-size: 18px;
         margin-right: 5px;
+        
     }
-  h1{
+h1{
     margin: 0;
     font-size: 35px;
     background-color: rgb(41, 144, 0);
   }
-  span{
+  .abouts{
+     background-color:white;
+  }
+  .Thumb{
     color: rgb(219, 255, 15);
   }
     
