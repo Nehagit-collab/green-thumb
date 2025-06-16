@@ -9,7 +9,234 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 </head>
 <body>
+<script>  function goToSellPage() {
+            window.location.href = 'sell1.html';
+        }
+         window.addEventListener('load', () => {
+            loadCart();
+            loadWishlist(); 
+        });
 
+        let wishlist = [];
+        let cart = [];
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // --- Cart Functions ---
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function loadCart() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
+            } else {
+                cart = [];
+            }
+            updateCart();
+        }
+
+        function addToCart(itemId) {
+            const item = allProducts.find(i => i.id === itemId);
+            if (!item) {
+                return;
+            }
+            const found = cart.find(i => i.id === itemId);
+            if (found) found.quantity++;
+            else cart.push({ ...item, quantity: 1 });
+
+            saveCartToStorage();
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cartList');
+            const totalCostSpan = document.getElementById('totalCost');
+            if (!cartList || !totalCostSpan) {
+                return;
+            }
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} (${item.quantity}) - $${(item.price * item.quantity).toFixed(2)} <button onclick="removeFromCart(${item.id})">Remove</button>`;
+                cartList.appendChild(li);
+            });
+            totalCostSpan.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            saveCartToStorage();
+            updateCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCart();
+        }
+
+        function buyItems() {
+            if (cart.length > 0) {
+                alert('Thank you for your purchase!');
+                clearCart();
+                toggleCart(); // Close cart after purchase
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        // --- Wishlist Functions ---
+        function saveWishlistToStorage() {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        function loadWishlist() {
+            const storedWishlist = localStorage.getItem('wishlist');
+            if (storedWishlist) {
+                wishlist = JSON.parse(storedWishlist);
+            } else {
+                wishlist = [];
+            }
+            updateWishlist();
+        }
+
+        function addToWishlist(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                return;
+            }
+            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+
+            if (!existingItem) {
+                wishlist.push({ ...item });
+                saveWishlistToStorage();
+                updateWishlist();
+            } else {
+                alert(`${item.name} is already in your wishlist!`);
+            }
+        }
+
+        function updateWishlist() {
+            const wishlistList = document.getElementById('wishlistList');
+            if (!wishlistList) {
+                return;
+            }
+            wishlistList.innerHTML = '';
+
+            wishlist.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price.toFixed(2)} <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
+                wishlistList.appendChild(li);
+            });
+        }
+
+        function removeFromWishlist(itemId) {
+            wishlist = wishlist.filter(item => item.id !== itemId);
+            saveWishlistToStorage();
+            updateWishlist();
+        }
+
+        function clearWishlist() {
+            wishlist = [];
+            saveWishlistToStorage();
+            updateWishlist();
+            alert('Your wishlist has been cleared!');
+        }
+
+         function toggleMenu() {
+            const check = document.getElementById('check');
+            if (check) check.checked = !check.checked; // This line might be redundant if only used by the label
+
+            // Close other overlays if menu is opened/closed
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+        function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer) cartContainer.classList.toggle('active');
+
+            // Close other overlays when cart is opened/closed
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN CART IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+        function toggleWishlist() {
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const cartContainer = document.getElementById('cartContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (wishlistContainer) wishlistContainer.classList.toggle('active');
+
+            // Close other overlays when wishlist is opened/closed
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN WISHLIST IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+
+function closeAllActiveOverlays() {
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+            // Always uncheck the menu checkbox when any other overlay is being opened or closed explicitly
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+        }
+</script>
 <h1>Green<span> Thumb</span></h1>
 
 <input type="checkbox" id="check" />
@@ -44,6 +271,30 @@
     </li>
   </ul>
 </div>
+<label for="check" class="overlay"></label>
+
+
+ <div class="cart" id="cartContainer">
+        <h2>My Cart</h2>
+        <ul id="cartList"></ul>
+        <div class="cart-total">
+            Total Cost: $<span id="totalCost">0.00</span>
+        </div>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleCart()">Close</div>
+            <div onclick="buyItems()">Buy Now</div>
+        </div>
+    </div>
+
+    <div class="wishlist" id="wishlistContainer">
+        <h2>My Wishlist</h2>
+        <ul id="wishlistList"></ul>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleWishlist()">Close</div>
+            <div onclick="clearWishlist()">Clear Wishlist</div>
+        </div>
+    </div>
+
 
     <div class="container">
         <div class="head">
@@ -54,7 +305,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src="jan.jpg" alt="">
-                        <span>Janet holland</span>
+                        <span  class="name">Janet holland</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -76,7 +327,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src="emila.jpg" alt="">
-                        <span>Emilia smith</span>
+                        <span  class="name">Emilia smith</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -96,7 +347,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src= "asif.jpg"alt="">
-                        <span>Asif Sheoran</span>
+                        <span  class="name">Asif Sheoran</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -117,7 +368,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src="mic.jpg" alt="">
-                        <span>Micheal Faist</span>
+                        <span class="name">Micheal Faist</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -138,7 +389,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src="pet.jpg" alt="">
-                        <span>Peter jackman</span>
+                        <span  class="name">Peter jackman</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -160,7 +411,7 @@
                 <div class="top">
                     <div class="clientImage">
                         <img src="sofia.jpg" alt="">
-                        <span>Sofia christfer</span>
+                        <span  class="name">Sofia christfer</span>
                     </div>
                     <ul>
                         <li><i class="fa-solid fa-star"></i></li>
@@ -179,36 +430,24 @@
         </div>
     </div>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body{
-background-repeat:no-repeat;
-background-size:cover;
-width:100%;
-height:600px;
-}
-.head h2{
-    font-size: 30px;
-    margin-bottom: 20px;
-}
+  
     .container {
       width: 100%;
-      padding: 40px 20px;
       display: flex;
+      padding: 40px 20px;
       flex-direction: column;
       align-items: center;
       background-color: #fefefe;
     }
-
+    .name{
+      color: black;
+    }
     .reviewSection {
       display: flex;
       flex-wrap: wrap;
       gap: 30px;
       justify-content: center;
-      max-width: 1200px;
+      width: 100%;
     }
 
     .reviewItem {
@@ -257,7 +496,7 @@ height:600px;
     }
 
     .top ul li {
-      color: orange;
+      color: rgb(0, 151, 13);
       padding-left: 4px;
     }
 
@@ -278,14 +517,19 @@ height:600px;
     }
 
     @media (max-width: 480px) {
+       .container {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fefefe;
+    }
      .head h2 {
         font-size: 1.8rem;
       }
       .search-box{
       display: none;
-    }
-   
-
+      }
       .top {
         flex-direction: column;
         align-items: flex-start;
@@ -300,6 +544,5 @@ height:600px;
       }
     }
   </style>
-</style>
 </body>
 </html>

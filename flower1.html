@@ -56,7 +56,8 @@
             </li>
         </ul>    
     </div>    
-
+     <label for="check" class="overlay"></label>
+     
     <div class="cart" id="cartContainer">
         <h2>My Cart</h2>
         <ul id="cart"></ul>
@@ -180,10 +181,27 @@
             updateCart();
         }
 
-        function toggleCart() {
+      function toggleCart() {
             const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
             if (cartContainer) cartContainer.classList.toggle('active');
+
+            // Close other overlays when cart is opened/closed
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN CART IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
+
 
         function clearCart() {
             cart = [];
@@ -248,14 +266,51 @@ function updateWishlist() {
     saveWishlistToStorage(); // <--- ADD THIS LINE
     updateWishlist(); // <--- ADD THIS LINE
 }
-        function toggleWishlist() {
+         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
+            const cartContainer = document.getElementById('cartContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
             if (wishlistContainer) wishlistContainer.classList.toggle('active');
+
+            // Close other overlays when wishlist is opened/closed
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN WISHLIST IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
+
+
         function clearWishlist() {
             wishlist = [];
             updateWishlist();
             alert('Your wishlist has been cleared!');
+        }
+          function toggleMenu() {
+            const check = document.getElementById('check');
+            if (check) check.checked = !check.checked; // This line might be redundant if only used by the label
+
+            // Close other overlays if menu is opened/closed
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
         }
 
         function showDetails(itemId) {
@@ -372,7 +427,7 @@ function updateWishlist() {
 
         window.addEventListener('load', () => {
             loadCart();         
-             loadWishlist();
+           loadWishlist();
             const searchQuery = getUrlParameter('search');
 
             if (searchQuery) {
@@ -383,6 +438,25 @@ function updateWishlist() {
                 displayPageProducts(filtered, searchQuery);
             } else {
                 displayPageProducts(currentPageProducts);
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuCheckbox = document.getElementById('check');
+
+            // Select only the <a> tags and the .sell-button.
+            // The .shopping and .wishlist-icon elements are handled by their existing 'onclick' functions
+            // (toggleCart() and toggleWishlist() already uncheck the menu checkbox).
+            const closeMenuTriggers = document.querySelectorAll(
+                '.menu-bar ul li a, ' +           // All <a> tags (Home, Reviews, ContactUs, Privacy Policy)
+                '.menu-bar .sell-button'          // The SELL button
+            );
+
+            if (menuCheckbox && closeMenuTriggers.length > 0) {
+                closeMenuTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        menuCheckbox.checked = false; // Uncheck the box to close the menu
+                    });
+                });
             }
         });
     </script>

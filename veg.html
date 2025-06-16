@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Green Thumb - Vegetable Saplings</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         /* Add this highlighting style to your style.css if it's not already there */
@@ -38,7 +37,7 @@
     <input type="text" id="searchInput" class="search-box" onkeypress="handlePageSearch(event)" placeholder="Search for vegetables.....">
     <button class="search-btn" onclick="handlePageSearch(null)"> <i class="fas fa-search"></i> </button>
 
-    <div class="menu-bar">    
+    <div class="menu-bar">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="reviews.html">Reviews</a></li>
@@ -55,13 +54,14 @@
                     <i class="fas fa-heart"></i>
                 </div>
             </li>
-        </ul>    
-    </div>    
+        </ul>
+    </div>
+
+    <label for="check" class="overlay"></label>
 
     <div class="cart" id="cartContainer">
         <h2>My Cart</h2>
-        <ul id="cart"></ul>
-        <div class="cart-total">
+        <ul id="cartList"></ul> <div class="cart-total">
             Total Cost: $<span id="totalCost">0.00</span>
         </div>
         <div class="checkout">
@@ -72,8 +72,7 @@
 
     <div class="wishlist" id="wishlistContainer">
         <h2>My Wishlist</h2>
-        <ul id="wishlist"></ul>
-        <div class="checkout">
+        <ul id="wishlistList"></ul> <div class="checkout">
             <div class="closeshopping" onclick="toggleWishlist()">Close</div>
             <div onclick="clearWishlist()">Clear Wishlist</div>
         </div>
@@ -124,7 +123,30 @@
         let wishlist = [];
         let cart = [];
 
-        // --- All Function Definitions (Moved to top for guaranteed hoisting/availability) ---
+        // --- Helper Function to Close All Overlays ---
+        // This function centralizes the logic for closing all possible active overlays
+        function closeAllActiveOverlays() {
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+            // Always uncheck the menu checkbox when any other overlay is being opened or closed explicitly
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+        }
+
+        // --- All Function Definitions ---
 
         // Function to get URL parameters
         function getUrlParameter(name) {
@@ -164,10 +186,10 @@
         }
 
         function updateCart() {
-            const cartList = document.getElementById('cart');
+            const cartList = document.getElementById('cartList'); // Corrected ID
             const totalCostSpan = document.getElementById('totalCost');
             if (!cartList || !totalCostSpan) {
-                console.error("Cart elements not found."); // Added error check
+                console.error("Cart elements not found (cartList or totalCostSpan).");
                 return;
             }
             cartList.innerHTML = '';
@@ -190,7 +212,19 @@
 
         function toggleCart() {
             const cartContainer = document.getElementById('cartContainer');
-            if (cartContainer) cartContainer.classList.toggle('active'); // Added check
+            if (!cartContainer) return;
+
+            // Check if the cart is currently active.
+            const isCartActive = cartContainer.classList.contains('active');
+
+            // Close all other overlays (including the menu).
+            closeAllActiveOverlays();
+
+            // If the cart was not active, activate it now.
+            // If it was active, closeAllActiveOverlays already handled closing it.
+            if (!isCartActive) {
+                cartContainer.classList.add('active');
+            }
         }
 
         function clearCart() {
@@ -203,12 +237,27 @@
             if (cart.length > 0) {
                 alert('Thank you for your purchase!');
                 clearCart();
+                toggleCart(); // Close cart after purchase
             } else {
                 alert('Your cart is empty!');
             }
         }
 
         // Wishlist Functions
+        function saveWishlistToStorage() {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        function loadWishlist() {
+            const storedWishlist = localStorage.getItem('wishlist');
+            if (storedWishlist) {
+                wishlist = JSON.parse(storedWishlist);
+            } else {
+                wishlist = [];
+            }
+            updateWishlist();
+        }
+
         function addToWishlist(itemId) {
             const item = allProducts.find(item => item.id === itemId);
             if (!item) {
@@ -219,16 +268,17 @@
 
             if (!existingItem) {
                 wishlist.push({ ...item, quantity: 1 });
+                saveWishlistToStorage();
+                updateWishlist();
             } else {
                 alert(`${item.name} is already in your wishlist!`);
             }
-            updateWishlist();
         }
 
         function updateWishlist() {
-            const wishlistList = document.getElementById('wishlist');
+            const wishlistList = document.getElementById('wishlistList'); // Corrected ID
             if (!wishlistList) {
-                console.error("Wishlist element not found."); // Added error check
+                console.error("Wishlist element not found (wishlistList).");
                 return;
             }
             wishlistList.innerHTML = '';
@@ -242,16 +292,26 @@
 
         function removeFromWishlist(itemId) {
             wishlist = wishlist.filter(item => item.id !== itemId);
+            saveWishlistToStorage();
             updateWishlist();
         }
 
         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
-            if (wishlistContainer) wishlistContainer.classList.toggle('active'); // Added check
+            if (!wishlistContainer) return;
+
+            const isWishlistActive = wishlistContainer.classList.contains('active');
+
+            closeAllActiveOverlays(); // Close all other overlays (including the menu)
+
+            if (!isWishlistActive) {
+                wishlistContainer.classList.add('active');
+            }
         }
 
         function clearWishlist() {
             wishlist = [];
+            saveWishlistToStorage();
             updateWishlist();
             alert('Your wishlist has been cleared!');
         }
@@ -264,10 +324,13 @@
                 return;
             }
             const detailsContainer = document.getElementById('detailsContainer');
-            if (!detailsContainer) { // Added error check
+            if (!detailsContainer) {
                 console.error("Details container not found.");
                 return;
             }
+
+            closeAllActiveOverlays(); // Close all other overlays first
+
             detailsContainer.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
                 <h2>${item.name}</h2>
@@ -276,10 +339,10 @@
                 <button onclick="addToCart(${item.id})">Add to Cart</button>
                 <button onclick="buyNow(${item.id})">Buy Now</button>
                 <button onclick="closeDetails()">Close</button>
-                <button onclick="addToWishlist(${item.id})"><i class="fas fa-heart"></i></button>
+                <button onclick="addToWishlist(${item.id})"><i class="fas fa-heart"></i> Add to Wishlist</button>
                 <h4>Some additional tips</h4>
                 <ul>
-                    ${Array.isArray(item.reviews) ? item.reviews.map(review => `<li>${review}</li>`).join('') : `<li>${item.reviews}</li>`}
+                    ${Array.isArray(item.reviews) ? item.reviews.map(review => `<li>${review}</li>`).join('') : `<li>${item.reviews || 'No specific tips available.'}</li>`}
                 </ul>
             `;
             detailsContainer.style.display = 'block';
@@ -287,7 +350,7 @@
 
         function closeDetails() {
             const detailsContainer = document.getElementById('detailsContainer');
-            if (detailsContainer) detailsContainer.style.display = 'none'; // Added check
+            if (detailsContainer) detailsContainer.style.display = 'none';
         }
 
         function buyNow(itemId) {
@@ -305,14 +368,10 @@
 
         // Function to display products on this page (vegetables)
         function displayPageProducts(productsToDisplay, highlightQuery = '') {
-            console.log("Function displayPageProducts called."); // DEBUG
-            console.log("Products to Display:", productsToDisplay); // DEBUG: The actual products being passed
-            console.log("Highlight Query:", highlightQuery); // DEBUG: The highlight query being passed
-
             const itemList = document.getElementById('itemList');
             const noResultsMessage = document.getElementById('noResultsMessage');
 
-            if (!itemList || !noResultsMessage) { // Added checks for elements
+            if (!itemList || !noResultsMessage) {
                 console.error("Error: 'itemList' or 'noResultsMessage' elements not found in veg.html.");
                 return;
             }
@@ -321,8 +380,6 @@
 
             if (productsToDisplay.length === 0) {
                 noResultsMessage.style.display = 'block';
-                console.log("No results to display. Showing message."); // DEBUG
-                return;
             } else {
                 noResultsMessage.style.display = 'none';
             }
@@ -347,7 +404,6 @@
                 `;
 
                 itemList.appendChild(li);
-                console.log(`Appended item: ${item.name}`); // DEBUG
             });
 
             // After all items are rendered, then apply highlight and scroll
@@ -355,15 +411,13 @@
                 const highlightedItem = productsToDisplay.find(item =>
                     item.name.toLowerCase().includes(highlightQuery.toLowerCase())
                 );
-                console.log("Item to highlight:", highlightedItem); // DEBUG
                 if (highlightedItem) {
                     const itemElement = document.getElementById(`item-${highlightedItem.id}`);
                     if (itemElement) {
                         itemElement.classList.add('highlight');
-                        console.log(`Applied highlight to: ${highlightedItem.name}`); // DEBUG
                         setTimeout(() => itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
                     } else {
-                        console.log(`Could not find DOM element for item-id: item-${highlightedItem.id}`); // DEBUG
+                        console.log(`Could not find DOM element for item-id: item-${highlightedItem.id}`);
                     }
                 }
             }
@@ -376,40 +430,52 @@
             }
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value.toLowerCase().trim();
-            console.log("Local Page Search Query:", query); // DEBUG
 
             const filtered = currentPageProducts.filter(product =>
                 product.name.toLowerCase().includes(query)
             );
-            console.log("Filtered Products (from local search):", filtered); // DEBUG
             displayPageProducts(filtered, query); // Pass the query for potential highlighting
         }
 
         // Filter products specifically for this page (vegetables)
         // This MUST be after allProducts.js is loaded and before currentPageProducts is used
-        const currentPageProducts = allProducts.filter(p => p.category === 'vegetable');
-        console.log("currentPageProducts (all vegetables on veg.html load):", currentPageProducts); // DEBUG: All vegetable products
+        const currentPageProducts = (typeof allProducts !== 'undefined') ? allProducts.filter(p => p.category === 'vegetable') : [];
 
-        // On page load, check for a search query in the URL and display products
+
+        // --- Event Listeners and Initial Load ---
         window.addEventListener('load', () => {
-            console.log("Window loaded on veg.html. Initializing..."); // DEBUG
-            loadCart(); // Load cart state (now defined above)
+            loadCart();
+            loadWishlist(); // Load wishlist state
             const searchQuery = getUrlParameter('search');
-            console.log("Search Query on veg.html load:", searchQuery); // DEBUG: Query from URL
 
             if (searchQuery) {
                 document.getElementById('searchInput').value = searchQuery; // Populate search box
-                const filtered = currentPageProducts.filter(product => // currentPageProducts already contains ALL vegetables
+                const filtered = currentPageProducts.filter(product =>
                     product.name.toLowerCase().includes(searchQuery.toLowerCase())
                 );
-                console.log("Filtered Products (from URL search query):", filtered); // DEBUG: Products found by URL search
                 displayPageProducts(filtered, searchQuery); // Pass searchQuery for highlighting
             } else {
-                console.log("No search query in URL. Displaying all currentPageProducts."); // DEBUG
                 displayPageProducts(currentPageProducts); // Display all vegetables if no search query
             }
         });
-    </script>
 
-</body>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuCheckbox = document.getElementById('check');
+
+            // Select only the <a> tags and the .sell-button within the menu.
+            // The .shopping and .wishlist-icon elements are handled by their own toggleCart/toggleWishlist functions.
+            const closeMenuTriggers = document.querySelectorAll(
+                '.menu-bar ul li a, ' +           // All <a> tags (Home, Reviews, ContactUs, Privacy Policy)
+                '.menu-bar .sell-button'          // The SELL button
+            );
+
+            if (menuCheckbox && closeMenuTriggers.length > 0) {
+                closeMenuTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        menuCheckbox.checked = false; // Uncheck the box to close the menu
+                    });
+                });
+            }
+        });
+    </script> </body>
 </html>

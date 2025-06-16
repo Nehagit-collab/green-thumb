@@ -8,7 +8,243 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
+  <script>
+      function goToSellPage() {
+            window.location.href = 'sell1.html';
+        }
+        function buyNow(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (item) {
+                alert(`Thank you for purchasing ${item.name}!`);
+                closeDetails();
+            }
+        }
 
+        let wishlist = [];
+        let cart = [];
+           window.addEventListener('load', () => {
+            loadCart();
+            loadWishlist(); 
+        });
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // --- Cart Functions ---
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function loadCart() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
+            } else {
+                cart = [];
+            }
+            updateCart();
+        }
+
+        function addToCart(itemId) {
+            const item = allProducts.find(i => i.id === itemId);
+            if (!item) {
+                return;
+            }
+            const found = cart.find(i => i.id === itemId);
+            if (found) found.quantity++;
+            else cart.push({ ...item, quantity: 1 });
+
+            saveCartToStorage();
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cartList');
+            const totalCostSpan = document.getElementById('totalCost');
+            if (!cartList || !totalCostSpan) {
+                return;
+            }
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} (${item.quantity}) - $${(item.price * item.quantity).toFixed(2)} <button onclick="removeFromCart(${item.id})">Remove</button>`;
+                cartList.appendChild(li);
+            });
+            totalCostSpan.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            saveCartToStorage();
+            updateCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCart();
+        }
+
+        function buyItems() {
+            if (cart.length > 0) {
+                alert('Thank you for your purchase!');
+                clearCart();
+                toggleCart(); // Close cart after purchase
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        // --- Wishlist Functions ---
+        function saveWishlistToStorage() {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        function loadWishlist() {
+            const storedWishlist = localStorage.getItem('wishlist');
+            if (storedWishlist) {
+                wishlist = JSON.parse(storedWishlist);
+            } else {
+                wishlist = [];
+            }
+            updateWishlist();
+        }
+
+        function addToWishlist(itemId) {
+            const item = allProducts.find(item => item.id === itemId);
+            if (!item) {
+                return;
+            }
+            const existingItem = wishlist.find(wishlistItem => wishlistItem.id === itemId);
+
+            if (!existingItem) {
+                wishlist.push({ ...item });
+                saveWishlistToStorage();
+                updateWishlist();
+            } else {
+                alert(`${item.name} is already in your wishlist!`);
+            }
+        }
+
+        function updateWishlist() {
+            const wishlistList = document.getElementById('wishlistList');
+            if (!wishlistList) {
+                return;
+            }
+            wishlistList.innerHTML = '';
+
+            wishlist.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}"> ${item.name} - $${item.price.toFixed(2)} <button onclick="removeFromWishlist(${item.id})">Remove</button>`;
+                wishlistList.appendChild(li);
+            });
+        }
+
+        function removeFromWishlist(itemId) {
+            wishlist = wishlist.filter(item => item.id !== itemId);
+            saveWishlistToStorage();
+            updateWishlist();
+        }
+
+        function clearWishlist() {
+            wishlist = [];
+            saveWishlistToStorage();
+            updateWishlist();
+            alert('Your wishlist has been cleared!');
+        }
+
+         function toggleMenu() {
+            const check = document.getElementById('check');
+            if (check) check.checked = !check.checked; // This line might be redundant if only used by the label
+
+            // Close other overlays if menu is opened/closed
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+        function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer) cartContainer.classList.toggle('active');
+
+            // Close other overlays when cart is opened/closed
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN CART IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+        function toggleWishlist() {
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const cartContainer = document.getElementById('cartContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (wishlistContainer) wishlistContainer.classList.toggle('active');
+
+            // Close other overlays when wishlist is opened/closed
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN WISHLIST IS TOGGLED
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
+
+function closeAllActiveOverlays() {
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+            const menuToggleCheckbox = document.getElementById('check');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+            // Always uncheck the menu checkbox when any other overlay is being opened or closed explicitly
+            if (menuToggleCheckbox && menuToggleCheckbox.checked) {
+                menuToggleCheckbox.checked = false;
+            }
+        }
+
+  </script>
 <h1>Green<span> Thumb</span></h1>
 
 <input type="checkbox" id="check">
@@ -38,8 +274,28 @@
         </li>
    </ul>  
 </div>  
-        
-<body background="C:\Users\sneha\OneDrive\Desktop\neha 2\neha\pexels-scottwebb-212937.jpg">
+        <div class="cart" id="cartContainer">
+        <h2>My Cart</h2>
+        <ul id="cartList"></ul>
+        <div class="cart-total">
+            Total Cost: $<span id="totalCost">0.00</span>
+        </div>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleCart()">Close</div>
+            <div onclick="buyItems()">Buy Now</div>
+        </div>
+    </div>
+
+    <div class="wishlist" id="wishlistContainer">
+        <h2>My Wishlist</h2>
+        <ul id="wishlistList"></ul>
+        <div class="checkout">
+            <div class="closeshopping" onclick="toggleWishlist()">Close</div>
+            <div onclick="clearWishlist()">Clear Wishlist</div>
+        </div>
+    </div>
+ 
+<body >
 <div class="wrapper flex_align_justify">
 <div class="terms_service">
 <div class="tc-item tc_head flex_align_justify">
@@ -114,6 +370,7 @@ Publicly available information: When you post an item for sale using our Service
 </div>
 </div>
 <style>
+
 .flex_align_justify {
   display: flex;
   align-items: center;

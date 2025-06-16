@@ -301,4 +301,25 @@ function updateWishlist() {
                 displayProductsOnHomePage(featuredProducts);
             }
         });
-    
+    document.addEventListener('DOMContentLoaded', () => {
+            const menuCheckbox = document.getElementById('check');
+
+            // Select all clickable items that should close the menu
+            const closeMenuTriggers = document.querySelectorAll(
+                '.menu-bar ul li a, ' +           // All <a> tags (Home, Reviews, ContactUs, Privacy Policy)
+                '.menu-bar .sell-button, ' +      // The SELL button
+                '.menu-bar .shopping, ' +         // The shopping cart icon div
+                '.menu-bar .wishlist-icon'        // The wishlist icon div
+            );
+
+            if (menuCheckbox && closeMenuTriggers.length > 0) {
+                closeMenuTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        // This will uncheck the box and close the menu.
+                        // It will run AFTER any existing `onclick` attributes on the element
+                        // (e.g., `goToSellPage()`, `toggleCart()`, `toggleWishlist()`).
+                        menuCheckbox.checked = false;
+                    });
+                });
+            }
+        });

@@ -56,7 +56,7 @@
             </li>
         </ul>
     </div>
-
+ <label for="check" class="overlay"></label>
     <div class="cart" id="cartContainer">
         <h2>My Cart</h2>
         <ul id="cart"></ul>
@@ -200,7 +200,8 @@
             }
         }
 
-        function toggleCart() {
+        
+      function toggleCart() {
             const cartContainer = document.getElementById('cartContainer');
             const wishlistContainer = document.getElementById('wishlistContainer');
             const menuToggleCheckbox = document.getElementById('check');
@@ -208,9 +209,11 @@
 
             if (cartContainer) cartContainer.classList.toggle('active');
 
+            // Close other overlays when cart is opened/closed
             if (wishlistContainer && wishlistContainer.classList.contains('active')) {
                 wishlistContainer.classList.remove('active');
             }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN CART IS TOGGLED
             if (menuToggleCheckbox && menuToggleCheckbox.checked) {
                 menuToggleCheckbox.checked = false;
             }
@@ -218,7 +221,6 @@
                 detailsContainer.style.display = 'none';
             }
         }
-
         function clearCart() {
             cart = [];
             localStorage.removeItem('cart');
@@ -284,7 +286,8 @@
             updateWishlist();
         }
 
-        function toggleWishlist() {
+       
+         function toggleWishlist() {
             const wishlistContainer = document.getElementById('wishlistContainer');
             const cartContainer = document.getElementById('cartContainer');
             const menuToggleCheckbox = document.getElementById('check');
@@ -292,9 +295,11 @@
 
             if (wishlistContainer) wishlistContainer.classList.toggle('active');
 
+            // Close other overlays when wishlist is opened/closed
             if (cartContainer && cartContainer.classList.contains('active')) {
                 cartContainer.classList.remove('active');
             }
+            // THIS LINE IS CRUCIAL AND ALREADY CLOSES THE MENU WHEN WISHLIST IS TOGGLED
             if (menuToggleCheckbox && menuToggleCheckbox.checked) {
                 menuToggleCheckbox.checked = false;
             }
@@ -302,6 +307,26 @@
                 detailsContainer.style.display = 'none';
             }
         }
+        function toggleMenu() {
+            const check = document.getElementById('check');
+            if (check) check.checked = !check.checked; // This line might be redundant if only used by the label
+
+            // Close other overlays if menu is opened/closed
+            const cartContainer = document.getElementById('cartContainer');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            const detailsContainer = document.getElementById('detailsContainer');
+
+            if (cartContainer && cartContainer.classList.contains('active')) {
+                cartContainer.classList.remove('active');
+            }
+            if (wishlistContainer && wishlistContainer.classList.contains('active')) {
+                wishlistContainer.classList.remove('active');
+            }
+            if (detailsContainer && detailsContainer.style.display === 'block') {
+                detailsContainer.style.display = 'none';
+            }
+        }
+
 
         function clearWishlist() {
             wishlist = [];
@@ -448,40 +473,23 @@
                 displayPageProducts(currentPageProducts);
             }
         });
+ document.addEventListener('DOMContentLoaded', () => {
+            const menuCheckbox = document.getElementById('check');
 
-        document.getElementById('checkbtn').onclick = toggleMenu;
+            // Select only the <a> tags and the .sell-button.
+            // The .shopping and .wishlist-icon elements are handled by their existing 'onclick' functions
+            // (toggleCart() and toggleWishlist() already uncheck the menu checkbox).
+            const closeMenuTriggers = document.querySelectorAll(
+                '.menu-bar ul li a, ' +           // All <a> tags (Home, Reviews, ContactUs, Privacy Policy)
+                '.menu-bar .sell-button'          // The SELL button
+            );
 
-        document.addEventListener('click', function(event) {
-            const cartContainer = document.getElementById('cartContainer');
-            const shoppingIcon = document.querySelector('.shopping');
-            const wishlistContainer = document.getElementById('wishlistContainer');
-            const wishlistIcon = document.querySelector('.wishlist-icon');
-            const detailsContainer = document.getElementById('detailsContainer');
-            const viewDetailsButtons = document.querySelectorAll('.item button');
-            const menuToggleCheckbox = document.getElementById('check');
-            const checkBtn = document.getElementById('checkbtn');
-            const menuBar = document.getElementById('menuBar');
-
-            if (cartContainer && cartContainer.classList.contains('active') && !cartContainer.contains(event.target) && !shoppingIcon.contains(event.target)) {
-                cartContainer.classList.remove('active');
-            }
-
-            if (wishlistContainer && wishlistContainer.classList.contains('active') && !wishlistContainer.contains(event.target) && !wishlistIcon.contains(event.target)) {
-                wishlistContainer.classList.remove('active');
-            }
-
-            let clickedOnViewDetailsButton = false;
-            viewDetailsButtons.forEach(button => {
-                if (button.contains(event.target)) {
-                    clickedOnViewDetailsButton = true;
-                }
-            });
-            if (detailsContainer && detailsContainer.style.display === 'block' && !detailsContainer.contains(event.target) && !clickedOnViewDetailsButton) {
-                detailsContainer.style.display = 'none';
-            }
-
-            if (menuToggleCheckbox && menuToggleCheckbox.checked && !menuBar.contains(event.target) && !checkBtn.contains(event.target) && event.target !== menuToggleCheckbox) {
-                menuToggleCheckbox.checked = false;
+            if (menuCheckbox && closeMenuTriggers.length > 0) {
+                closeMenuTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        menuCheckbox.checked = false; // Uncheck the box to close the menu
+                    });
+                });
             }
         });
     </script>
